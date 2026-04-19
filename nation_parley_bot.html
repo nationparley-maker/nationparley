@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nation Parley — Configurador de Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #D4920C; --gold-light: #F5C030; --gold-dark: #8B5E08;
+  --black: #060606; --s1: #0f0f0f; --s2: #161616; --border: #2a2a2a;
+  --text: #e8e0d0; --dim: #7a7060; --green: #3dba6e; --red: #e05050;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--black); color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding: 40px 20px;
+}
+.brand {
+  font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 6px; text-align: center;
+}
+.sub { font-size: 10px; letter-spacing: 4px; color: var(--dim); margin-bottom: 36px; text-align: center; }
+
+.card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px; width: 100%; max-width: 520px;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+}
+.card-title {
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 24px;
+}
+.field { margin-bottom: 20px; }
+label {
+  display: block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 7px;
+}
+input, textarea {
+  width: 100%; background: var(--s1); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  padding: 11px 14px; outline: none; transition: border-color 0.2s;
+}
+input:focus, textarea:focus { border-color: var(--gold); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+.hint { font-size: 11px; color: var(--dim); margin-top: 5px; letter-spacing: 1px; }
+
+.btn {
+  width: 100%; padding: 14px; border: none; border-radius: 8px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  color: #000; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.2s; margin-top: 8px;
+}
+.btn:hover { opacity: 0.88; }
+
+.status {
+  margin-top: 16px; padding: 14px 16px; border-radius: 8px;
+  font-size: 14px; letter-spacing: 1px; display: none; line-height: 1.6;
+}
+.status.ok { background: rgba(61,186,110,0.1); border: 1px solid rgba(61,186,110,0.3); color: var(--green); display: block; }
+.status.err { background: rgba(224,80,80,0.1); border: 1px solid rgba(224,80,80,0.3); color: var(--red); display: block; }
+
+.step-box {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px 18px; margin-bottom: 16px;
+  font-size: 14px; line-height: 1.7; color: rgba(232,224,208,0.75);
+}
+.step-box strong { color: var(--gold-light); }
+
+.divider {
+  width: 100%; max-width: 520px;
+  border: none; border-top: 1px solid var(--border); margin: 28px 0;
+}
+
+/* Test section */
+.test-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px; width: 100%; max-width: 520px;
+  position: relative; overflow: hidden; margin-top: 0;
+}
+.test-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #3dba6e44, #3dba6e, #3dba6e44);
+}
+.chat-bubble {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 12px 12px 12px 2px; padding: 12px 16px;
+  font-size: 14px; line-height: 1.6; color: var(--text);
+  margin-bottom: 10px; max-width: 90%;
+}
+.chat-bubble.user {
+  background: rgba(212,146,12,0.1); border-color: rgba(212,146,12,0.2);
+  margin-left: auto; border-radius: 12px 12px 2px 12px; text-align: right;
+}
+.chat-label { font-size: 10px; letter-spacing: 2px; color: var(--dim); margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="brand">Nation Parley</div>
+<div class="sub">Configurador de Bot · Telegram</div>
+
+<!-- INSTRUCCIONES -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">Cómo funciona</div>
+  <div class="step-box">
+    <strong>1.</strong> Pegás tu token del bot (que te dio @BotFather) y el link de Mercado Pago.<br/>
+    <strong>2.</strong> Personalizás el mensaje de bienvenida.<br/>
+    <strong>3.</strong> Das clic en <strong>Activar Bot</strong>.<br/>
+    <strong>4.</strong> El bot queda activo y responde automáticamente a tus clientes.
+  </div>
+  <div class="step-box" style="border-color:rgba(224,80,80,0.2);background:rgba(224,80,80,0.04)">
+    ⚠ <strong style="color:var(--red)">El token es tu contraseña.</strong> No lo compartas con nadie. Solo lo pegás acá, en tu dispositivo.
+  </div>
+</div>
+
+<!-- FORMULARIO -->
+<div class="card">
+  <div class="card-title">Configuración del Bot</div>
+
+  <div class="field">
+    <label>Token del bot (de @BotFather)</label>
+    <input type="password" id="token" placeholder="1234567890:AAFxxxxxxxxxxxxxxxx"/>
+    <div class="hint">Lo encontrás en el mensaje que te mandó BotFather al crear el bot.</div>
+  </div>
+
+  <div class="field">
+    <label>Link de Mercado Pago</label>
+    <input type="text" id="mpLink" value="https://mpago.li/2Y6oc3x"/>
+    <div class="hint">Este link se manda automáticamente a cada cliente interesado.</div>
+  </div>
+
+  <div class="field">
+    <label>Precio de la suscripción VIP</label>
+    <input type="text" id="price" placeholder="Ej: $50.000 COP / mes"/>
+  </div>
+
+  <div class="field">
+    <label>Tu ID de Telegram (para recibir notificaciones)</label>
+    <input type="text" id="adminId" placeholder="Ej: 123456789"/>
+    <div class="hint">Abre @userinfobot en Telegram, escríbele cualquier cosa y te dice tu ID numérico.</div>
+  </div>
+
+  <div class="field">
+    <label>Mensaje de bienvenida (personalizalo)</label>
+    <textarea id="welcomeMsg">👋 ¡Hola! Bienvenido a *Nation Parley* 🏆
+
+Somos el canal de picks deportivos más confiable. Análisis reales con estadísticas verificadas.
+
+Para unirte al canal *VIP* escribe *QUIERO VIP* y te enviamos el link de pago al instante.</textarea>
+    <div class="hint">Podés usar *negrita* y _cursiva_ en Telegram.</div>
+  </div>
+
+  <div class="field">
+    <label>Mensaje con el link de pago</label>
+    <textarea id="payMsg">💳 *Perfecto!* Aquí está tu link de pago:
+
+👉 LINK_DE_PAGO
+
+💰 Valor: PRECIO
+
+✅ Una vez confirmado el pago, serás agregado al canal VIP en menos de 10 minutos.
+
+¿Tienes alguna duda? Escríbenos.</textarea>
+    <div class="hint">LINK_DE_PAGO y PRECIO se reemplazan automáticamente.</div>
+  </div>
+
+  <button class="btn" onclick="activateBot()">⚡ Activar Bot</button>
+  <div class="status" id="statusBox"></div>
+</div>
+
+<!-- PREVIEW del flujo -->
+<hr class="divider"/>
+<div class="test-card">
+  <div class="card-title">Vista previa del flujo</div>
+  <div class="chat-label">CLIENTE ESCRIBE:</div>
+  <div class="chat-bubble user">Hola, quiero el VIP</div>
+  <div class="chat-label" style="margin-top:8px">BOT RESPONDE:</div>
+  <div class="chat-bubble" id="previewWelcome">👋 ¡Hola! Bienvenido a <strong>Nation Parley</strong> 🏆<br/><br/>Para unirte al canal VIP responde con tu usuario de Telegram y te enviamos el link de pago.</div>
+
+  <div style="margin-top:16px">
+  <div class="chat-label">CLIENTE ESCRIBE:</div>
+  <div class="chat-bubble user">@miusuario</div>
+  <div class="chat-label" style="margin-top:8px">BOT RESPONDE:</div>
+  <div class="chat-bubble" id="previewPay">💳 <strong>¡Perfecto!</strong> Aquí está tu link de pago:<br/><br/>👉 <a href="https://mpago.li/2Y6oc3x" style="color:var(--gold)">https://mpago.li/2Y6oc3x</a><br/><br/>✅ Una vez confirmado el pago, serás agregado al canal VIP en menos de 10 minutos.</div>
+  </div>
+</div>
+
+<script>
+// Live preview update
+document.getElementById('welcomeMsg').addEventListener('input', function() {
+  document.getElementById('previewWelcome').innerHTML = this.value
+    .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    .replace(/\n/g, '<br/>');
+});
+
+document.getElementById('payMsg').addEventListener('input', updatePayPreview);
+document.getElementById('mpLink').addEventListener('input', updatePayPreview);
+document.getElementById('price').addEventListener('input', updatePayPreview);
+
+function updatePayPreview() {
+  const link = document.getElementById('mpLink').value;
+  const price = document.getElementById('price').value || '$50.000 COP';
+  let msg = document.getElementById('payMsg').value
+    .replace('LINK_DE_PAGO', `<a href="${link}" style="color:var(--gold)">${link}</a>`)
+    .replace('PRECIO', price)
+    .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+    .replace(/_(.*?)_/g, '<em>$1</em>')
+    .replace(/\n/g, '<br/>');
+  document.getElementById('previewPay').innerHTML = msg;
+}
+
+async function activateBot() {
+  const token = document.getElementById('token').value.trim();
+  const mpLink = document.getElementById('mpLink').value.trim();
+  const price  = document.getElementById('price').value.trim() || '$50.000 COP / mes';
+  const adminId = document.getElementById('adminId').value.trim();
+  const welcomeMsg = document.getElementById('welcomeMsg').value.trim();
+  const payMsg = document.getElementById('payMsg').value
+    .replace('LINK_DE_PAGO', mpLink)
+    .replace('PRECIO', price);
+  const statusBox = document.getElementById('statusBox');
+
+  if (!token) {
+    statusBox.className = 'status err';
+    statusBox.textContent = '⚠ Pegá el token del bot primero.';
+    return;
+  }
+  if (!token.includes(':')) {
+    statusBox.className = 'status err';
+    statusBox.textContent = '⚠ El token no parece válido. Revisá que lo copiaste completo desde BotFather.';
+    return;
+  }
+
+  statusBox.className = 'status ok';
+  statusBox.textContent = '⏳ Verificando token...';
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+    const data = await res.json();
+    if (!data.ok) {
+      statusBox.className = 'status err';
+      statusBox.textContent = '❌ Token inválido. Revisá que lo copiaste completo desde BotFather.';
+      return;
+    }
+
+    const botName = data.result.username;
+
+    await fetch(`https://api.telegram.org/bot${token}/setMyCommands`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ commands: [
+        { command: 'start', description: 'Comenzar' },
+        { command: 'vip', description: 'Quiero el VIP' },
+        { command: 'pago', description: 'Link de pago' }
+      ]})
+    });
+
+    localStorage.setItem('np_bot_config', JSON.stringify({ token, mpLink, price, adminId, welcomeMsg, payMsg }));
+
+    statusBox.className = 'status ok';
+    statusBox.innerHTML = `✅ <strong>Bot verificado y configurado</strong><br/><br/>
+🤖 Bot: @${botName}<br/>
+🔗 Link MP: ${mpLink}<br/>
+💰 Precio: ${price}<br/>
+🔔 Notificaciones: ${adminId ? 'Activadas' : 'Sin ID de admin — no llegarán alertas'}<br/><br/>
+<strong>Último paso:</strong> Mantén esta pestaña abierta para que el bot funcione.<br/><br/>
+👉 Dale clic abajo para probarlo:`;
+
+    startPolling(token, welcomeMsg, payMsg, adminId);
+
+    const link = document.createElement('a');
+    link.href = `https://t.me/${botName}`;
+    link.target = '_blank';
+    link.style.cssText = 'display:block;margin-top:12px;padding:10px;background:rgba(61,186,110,0.15);border:1px solid rgba(61,186,110,0.3);border-radius:6px;color:#3dba6e;text-align:center;font-weight:700;letter-spacing:2px;font-size:13px;text-decoration:none';
+    link.textContent = `→ Abrir @${botName} en Telegram`;
+    statusBox.appendChild(link);
+
+  } catch(e) {
+    statusBox.className = 'status err';
+    statusBox.textContent = '❌ Error de conexión. Revisá que el token es correcto.';
+  }
+}
+
+// ── POLLING ──
+let lastUpdate = 0;
+let pollingInterval = null;
+
+function startPolling(token, welcomeMsg, payMsg, adminId) {
+  if (pollingInterval) clearInterval(pollingInterval);
+  pollingInterval = setInterval(() => poll(token, welcomeMsg, payMsg, adminId), 3000);
+}
+
+async function poll(token, welcomeMsg, payMsg, adminId) {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=${lastUpdate + 1}&timeout=2`);
+    const data = await res.json();
+    if (!data.ok || !data.result.length) return;
+
+    for (const update of data.result) {
+      lastUpdate = update.update_id;
+      const msg = update.message;
+      if (!msg || !msg.text) continue;
+
+      const chatId = msg.chat.id;
+      const text = msg.text.toLowerCase();
+
+      // Capture user info automatically
+      const firstName = msg.from.first_name || '';
+      const lastName  = msg.from.last_name  || '';
+      const username  = msg.from.username ? '@' + msg.from.username : '(sin usuario)';
+      const userId    = msg.from.id;
+      const fullName  = (firstName + ' ' + lastName).trim();
+
+      // Send payment link — check FIRST before welcome triggers
+      if (text.includes('quiero vip') || text === '/pago' || text.includes('pagar') || text.includes('link') || text === 'si' || text === 'sí' || text === 'ok' || text === 'listo' || text === 'quiero') {
+        await sendMessage(token, chatId, payMsg);
+
+        // Notify admin
+        if (adminId) {
+          const adminMsg = `💳 *Cliente solicitó el link de pago*\n\n👤 Nombre: ${fullName}\n📱 Usuario: ${username}\n🆔 ID Telegram: \`${userId}\`\n\n✅ _Link de Mercado Pago enviado automáticamente._\n⏳ _Pendiente confirmar pago y agregar al canal VIP._`;
+          await sendMessage(token, adminId, adminMsg);
+        }
+      }
+      // Welcome message
+      else if (text === '/start' || text.includes('hola') || text.includes('buenas') || text.includes('info') || text.includes('precio') || text.includes('suscri')) {
+        await sendMessage(token, chatId, welcomeMsg);
+
+        // Notify admin
+        if (adminId) {
+          const adminMsg = `🔔 *Nuevo interesado en el VIP*\n\n👤 Nombre: ${fullName}\n📱 Usuario: ${username}\n🆔 ID Telegram: \`${userId}\`\n\n_Está viendo el mensaje de bienvenida._`;
+          await sendMessage(token, adminId, adminMsg);
+        }
+      }
+      // Default
+      else {
+        await sendMessage(token, chatId, '¿Querés unirte al canal VIP de *Nation Parley*? Escribe *QUIERO VIP* para comenzar 🏆');
+      }
+    }
+  } catch(e) { /* silent */ }
+}
+
+async function sendMessage(token, chatId, text) {
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' })
+  });
+}
+
+// Restore saved config
+const saved = localStorage.getItem('np_bot_config');
+if (saved) {
+  const c = JSON.parse(saved);
+  document.getElementById('mpLink').value = c.mpLink || '';
+  document.getElementById('price').value = c.price || '';
+  document.getElementById('adminId').value = c.adminId || '';
+  document.getElementById('welcomeMsg').value = c.welcomeMsg || '';
+  document.getElementById('payMsg').value = c.payMsg || '';
+  updatePayPreview();
+}
+</script>
+</body>
+</html>
