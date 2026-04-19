@@ -4,18 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Nation Parley — Generador de Picks</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
   :root {
     --gold: #D4920C;
     --gold-light: #F5C030;
     --gold-dark: #8B5E08;
-    --black: #070707;
-    --surface: #111111;
-    --surface2: #1a1a1a;
-    --border: #2a2a2a;
+    --black: #0a0c0f;
+    --surface: #111318;
+    --surface2: #1a1d24;
+    --border: #2a2d36;
     --text: #e8e0d0;
-    --text-dim: #888070;
+    --text-dim: #666a7a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,22 +30,18 @@
     align-items: center;
   }
 
-  /* ── HEADER ── */
   header {
     width: 100%;
-    padding: 28px 40px 20px;
+    padding: 22px 40px 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid var(--border);
-    gap: 14px;
-  }
-  .logo-mark {
-    width: 42px; height: 42px;
+    gap: 12px;
   }
   .brand {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 600;
     background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
     -webkit-background-clip: text;
@@ -54,46 +50,52 @@
   }
   .brand span { font-style: italic; font-weight: 400; }
 
-  /* ── MAIN LAYOUT ── */
   main {
     width: 100%;
-    max-width: 1100px;
-    padding: 40px 24px;
+    max-width: 1140px;
+    padding: 36px 24px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 28px;
     align-items: start;
   }
 
-  @media (max-width: 768px) {
-    main { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 768px) { main { grid-template-columns: 1fr; } }
 
-  /* ── FORM PANEL ── */
   .panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 28px;
+    padding: 26px;
   }
   .panel-title {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
   }
 
-  .field { margin-bottom: 18px; }
+  .section-sep {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin: 20px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212,146,12,0.2);
+  }
+
+  .field { margin-bottom: 14px; }
   label {
     display: block;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--text-dim);
-    margin-bottom: 7px;
+    margin-bottom: 6px;
   }
   input, select, textarea {
     width: 100%;
@@ -103,56 +105,25 @@
     color: var(--text);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 16px;
-    padding: 11px 14px;
+    padding: 10px 13px;
     outline: none;
     transition: border-color 0.2s;
   }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--gold);
-  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
   select option { background: #1a1a1a; }
-  textarea { resize: vertical; min-height: 80px; font-size: 15px; line-height: 1.5; }
 
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  /* Confidence slider */
-  .slider-row { display: flex; align-items: center; gap: 14px; }
-  input[type=range] {
-    -webkit-appearance: none;
-    flex: 1;
-    height: 4px;
-    background: linear-gradient(90deg, var(--gold) var(--pct, 70%), var(--border) var(--pct, 70%));
-    border: none;
-    border-radius: 2px;
-    padding: 0;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: var(--gold-light);
-    border: 2px solid var(--gold-dark);
-    cursor: pointer;
-  }
-  .slider-val {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold-light);
-    min-width: 44px;
-    text-align: right;
-  }
-
-  /* Generate button */
   .btn-generate {
     width: 100%;
-    margin-top: 8px;
-    padding: 15px;
+    margin-top: 6px;
+    padding: 14px;
     background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
     border: none;
     border-radius: 8px;
     color: #000;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -161,14 +132,9 @@
   }
   .btn-generate:hover { opacity: 0.9; transform: translateY(-1px); }
   .btn-generate:active { transform: translateY(0); }
-  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-generate:disabled { opacity: 0.45; cursor: not-allowed; }
 
-  /* ── PREVIEW PANEL ── */
-  .preview-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+  .preview-panel { display: flex; flex-direction: column; gap: 14px; }
 
   .canvas-wrap {
     position: relative;
@@ -181,30 +147,25 @@
     align-items: center;
     justify-content: center;
   }
-  .canvas-wrap canvas {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-  }
+  .canvas-wrap canvas { width: 100%; height: 100%; object-fit: contain; display: block; }
   .canvas-placeholder {
     position: absolute;
     text-align: center;
     color: var(--text-dim);
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 2px;
   }
-  .canvas-placeholder svg { margin-bottom: 12px; opacity: 0.3; }
+  .canvas-placeholder svg { margin-bottom: 10px; opacity: 0.25; }
 
   .btn-download {
     width: 100%;
-    padding: 13px;
+    padding: 12px;
     background: transparent;
     border: 1px solid var(--gold);
     border-radius: 8px;
     color: var(--gold);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -212,15 +173,11 @@
     transition: all 0.2s;
     display: none;
   }
-  .btn-download:hover {
-    background: var(--gold);
-    color: #000;
-  }
+  .btn-download:hover { background: var(--gold); color: #000; }
 
-  /* Loading spinner */
   .spinner {
     display: none;
-    width: 36px; height: 36px;
+    width: 34px; height: 34px;
     border: 3px solid var(--border);
     border-top-color: var(--gold);
     border-radius: 50%;
@@ -229,23 +186,77 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Status */
   .status {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 2px;
     color: var(--text-dim);
     text-align: center;
-    min-height: 16px;
+    min-height: 14px;
   }
   .status.ok { color: #4CAF50; }
   .status.err { color: #e05050; }
+
+  .pick2-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    user-select: none;
+  }
+  .pick2-toggle input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+  .pick2-block { display: none; }
+  .pick2-block.visible { display: block; }
+
+  /* ── AUTOCOMPLETE ── */
+  .ac-wrap { position: relative; }
+
+  .ac-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0; right: 0;
+    background: #181b24;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    z-index: 9999;
+    display: none;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.85);
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .ac-dropdown::-webkit-scrollbar { width: 4px; }
+  .ac-dropdown::-webkit-scrollbar-track { background: #111; }
+  .ac-dropdown::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+  .ac-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.12s;
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.active { background: rgba(212,146,12,0.18); }
+
+  .ac-flag { font-size: 22px; line-height: 1; flex-shrink: 0; width: 30px; text-align: center; }
+  .ac-info { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+  .ac-name { font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ac-meta { font-size: 11px; color: var(--text-dim); letter-spacing: 1px; }
 </style>
 </head>
 <body>
 
 <header>
-  <!-- Inline SVG logo mark (basketball line art) -->
-  <svg class="logo-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="34" height="34" viewBox="0 0 80 80" fill="none">
     <defs>
       <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#C8860A"/>
@@ -253,15 +264,10 @@
         <stop offset="100%" stop-color="#8B5E08"/>
       </linearGradient>
     </defs>
-    <circle cx="40" cy="32" r="22" stroke="url(#hg)" stroke-width="1.8" fill="none"/>
-    <path d="M18,32 Q29,26 40,32 Q51,38 62,32" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M40,10 Q35,21 40,32 Q45,43 40,54" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M22,16 Q12,26 14,40 Q15,46 22,52" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-    <path d="M58,16 Q68,26 66,40 Q65,46 58,52" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-    <!-- hand simplified -->
-    <path d="M34,52 Q32,58 32,64 Q32,70 40,72 Q48,70 48,64 Q48,58 46,52" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M34,52 Q31,49 28,51 Q24,54 25,58 Q27,62 31,60 Q33,58 34,54" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-    <path d="M32,70 Q28,74 30,77 Q33,79 36,76" stroke="url(#hg)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <circle cx="40" cy="40" r="28" stroke="url(#hg)" stroke-width="2" fill="none"/>
+    <line x1="12" y1="40" x2="68" y2="40" stroke="url(#hg)" stroke-width="1.8"/>
+    <line x1="40" y1="12" x2="40" y2="68" stroke="url(#hg)" stroke-width="1.8"/>
+    <ellipse cx="40" cy="40" rx="16" ry="28" stroke="url(#hg)" stroke-width="1.5" fill="none"/>
   </svg>
   <div class="brand">Nation <span>Parley</span></div>
 </header>
@@ -269,485 +275,662 @@
 <main>
   <!-- FORM -->
   <div class="panel">
-    <div class="panel-title">Nuevo Pick</div>
+    <div class="panel-title">Configurar imagen</div>
 
-    <div class="field">
-      <label>Deporte</label>
-      <select id="sport">
-        <option value="⚽ FÚTBOL">⚽ Fútbol</option>
-        <option value="🏀 NBA">🏀 NBA</option>
-        <option value="🏈 NFL">🏈 NFL</option>
-        <option value="⚾ MLB">⚾ MLB</option>
-        <option value="🎾 TENIS">🎾 Tenis</option>
-        <option value="🥊 MMA/UFC">🥊 MMA / UFC</option>
-        <option value="🏆 OTRO">🏆 Otro</option>
-      </select>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Equipo / Jugador A</label>
-        <input id="team1" type="text" placeholder="Ej. Real Madrid"/>
-      </div>
-      <div class="field">
-        <label>Equipo / Jugador B</label>
-        <input id="team2" type="text" placeholder="Ej. Barcelona"/>
-      </div>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Tipo de apuesta</label>
-        <select id="betType">
-          <option>1X2 — Local</option>
-          <option>1X2 — Empate</option>
-          <option>1X2 — Visitante</option>
-          <option>Ambos anotan</option>
-          <option>Over 2.5</option>
-          <option>Under 2.5</option>
-          <option>Hándicap</option>
-          <option>Doble oportunidad</option>
-          <option>Primer gol</option>
-          <option>Personalizado</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Cuota</label>
-        <input id="odds" type="text" placeholder="Ej. 1.85"/>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Análisis breve</label>
-      <textarea id="analysis" placeholder="Ej. Real Madrid llega invicto en casa, Barcelona sin sus titulares clave..."></textarea>
-    </div>
-
-    <div class="field">
-      <label>Confianza del pick — <span id="confLabel">75</span>%</label>
-      <div class="slider-row">
-        <input type="range" id="confidence" min="50" max="99" value="75"
-               oninput="updateSlider(this)"/>
-        <span class="slider-val" id="confVal">75%</span>
-      </div>
-    </div>
+    <div class="section-sep">Partido</div>
 
     <div class="row2">
       <div class="field">
         <label>Liga / Torneo</label>
-        <input id="league" type="text" placeholder="Ej. Champions League"/>
+        <input id="league" type="text" placeholder="Se llena automático"/>
       </div>
       <div class="field">
+        <label>Bandera</label>
+        <input id="flag" type="text" placeholder="Se llena automático" maxlength="8"/>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
         <label>Fecha</label>
-        <input id="matchDate" type="text" placeholder="Ej. Hoy 20:00"/>
+        <input id="matchDate" type="text" placeholder="Ej. 19 ABR"/>
+      </div>
+      <div class="field">
+        <label>Hora</label>
+        <input id="matchTime" type="text" placeholder="Ej. 12:30 COT"/>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Equipo Local</label>
+        <div class="ac-wrap">
+          <input id="team1" type="text" placeholder="Escribe para buscar…" autocomplete="off"
+            oninput="acSearch(this,'ac1','team1')"
+            onkeydown="acKey(event,'ac1','team1')"
+            onfocus="acSearch(this,'ac1','team1')"/>
+          <div id="ac1" class="ac-dropdown"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Equipo Visitante</label>
+        <div class="ac-wrap">
+          <input id="team2" type="text" placeholder="Escribe para buscar…" autocomplete="off"
+            oninput="acSearch(this,'ac2','team2')"
+            onkeydown="acKey(event,'ac2','team2')"
+            onfocus="acSearch(this,'ac2','team2')"/>
+          <div id="ac2" class="ac-dropdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pick 1 -->
+    <div class="section-sep">Pick #1</div>
+
+    <div class="field">
+      <label>Tipo de apuesta</label>
+      <select id="betType1" onchange="syncBetLabel('betType1','betLabel1')">
+        <option value="AMBOS MARCAN">Ambos marcan</option>
+        <option value="MÁS DE 2.5 GOLES">Más de 2.5 goles</option>
+        <option value="MÁS DE 3.5 GOLES">Más de 3.5 goles</option>
+        <option value="MENOS DE 2.5 GOLES">Menos de 2.5 goles</option>
+        <option value="VICTORIA LOCAL">Victoria local</option>
+        <option value="VICTORIA VISITANTE">Victoria visitante</option>
+        <option value="EMPATE">Empate</option>
+        <option value="HÁNDICAP">Hándicap</option>
+        <option value="DOBLE OPORTUNIDAD">Doble oportunidad</option>
+        <option value="PRIMER GOL">Primer gol</option>
+        <option value="PERSONALIZADO">Personalizado</option>
+      </select>
+    </div>
+    <div id="customBet1Block" class="field" style="display:none">
+      <label>Texto personalizado (Pick #1)</label>
+      <input id="customBet1" type="text" placeholder="Ej. MÁS DE 1.5 GOLES"/>
+    </div>
+    <div class="field">
+      <label>Subtítulo en inglés (Pick #1)</label>
+      <input id="betLabel1" type="text" placeholder="Ej. BOTH TEAMS TO SCORE"/>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Cuota</label>
+        <input id="odds1" type="text" placeholder="Ej. 1.70"/>
+      </div>
+      <div class="field">
+        <label>Stake</label>
+        <input id="stake1" type="text" placeholder="Ej. 1.6"/>
+      </div>
+    </div>
+
+    <!-- Pick 2 -->
+    <div class="section-sep">
+      <label class="pick2-toggle">
+        <input type="checkbox" id="enablePick2" onchange="togglePick2()"/>
+        Agregar Pick #2
+      </label>
+    </div>
+
+    <div id="pick2Block" class="pick2-block">
+      <div class="field">
+        <label>Tipo de apuesta</label>
+        <select id="betType2" onchange="syncBetLabel('betType2','betLabel2')">
+          <option value="MÁS DE 2.5 GOLES">Más de 2.5 goles</option>
+          <option value="AMBOS MARCAN">Ambos marcan</option>
+          <option value="MÁS DE 3.5 GOLES">Más de 3.5 goles</option>
+          <option value="MENOS DE 2.5 GOLES">Menos de 2.5 goles</option>
+          <option value="VICTORIA LOCAL">Victoria local</option>
+          <option value="VICTORIA VISITANTE">Victoria visitante</option>
+          <option value="EMPATE">Empate</option>
+          <option value="HÁNDICAP">Hándicap</option>
+          <option value="DOBLE OPORTUNIDAD">Doble oportunidad</option>
+          <option value="PRIMER GOL">Primer gol</option>
+          <option value="PERSONALIZADO">Personalizado</option>
+        </select>
+      </div>
+      <div id="customBet2Block" class="field" style="display:none">
+        <label>Texto personalizado (Pick #2)</label>
+        <input id="customBet2" type="text" placeholder="Ej. SOBRE 1.5 GOLES"/>
+      </div>
+      <div class="field">
+        <label>Subtítulo en inglés (Pick #2)</label>
+        <input id="betLabel2" type="text" placeholder="Ej. OVER 2.5 GOALS"/>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Cuota</label>
+          <input id="odds2" type="text" placeholder="Ej. 1.80"/>
+        </div>
+        <div class="field">
+          <label>Stake</label>
+          <input id="stake2" type="text" placeholder="Ej. 1.3"/>
+        </div>
       </div>
     </div>
 
     <button class="btn-generate" id="btnGenerate" onclick="generateImage()">
       ✦ Generar imagen
     </button>
-    <div class="status" id="status"></div>
+    <div class="status" id="status" style="margin-top:10px"></div>
   </div>
 
   <!-- PREVIEW -->
   <div class="preview-panel">
-    <div class="canvas-wrap" id="canvasWrap">
+    <div class="canvas-wrap">
       <div class="canvas-placeholder" id="placeholder">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="18" r="12" stroke="#888" stroke-width="1.5" fill="none"/>
-          <path d="M12,18 Q18,15 24,18 Q30,21 36,18" stroke="#888" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <path d="M24,6 Q21,12 24,18 Q27,24 24,30" stroke="#888" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <rect x="4" y="4" width="40" height="40" rx="4" stroke="#555" stroke-width="1.5" fill="none"/>
+          <line x1="4" y1="18" x2="44" y2="18" stroke="#555" stroke-width="1"/>
+          <rect x="8" y="24" width="14" height="12" rx="2" stroke="#555" stroke-width="1.2" fill="none"/>
+          <rect x="26" y="24" width="14" height="12" rx="2" stroke="#555" stroke-width="1.2" fill="none"/>
         </svg>
-        <div>La imagen aparecerá aquí</div>
+        <div style="margin-top:10px">La imagen aparecerá aquí</div>
       </div>
       <div class="spinner" id="spinner"></div>
       <canvas id="pickCanvas" style="display:none"></canvas>
     </div>
     <button class="btn-download" id="btnDownload" onclick="downloadImage()">
-      ↓ Descargar imagen
+      ↓ Descargar imagen PNG
     </button>
   </div>
 </main>
 
 <script>
-// ── Slider update ──
-function updateSlider(el) {
-  const v = el.value;
-  document.getElementById('confLabel').textContent = v;
-  document.getElementById('confVal').textContent = v + '%';
-  const pct = ((v - 50) / 49 * 100).toFixed(1);
-  el.style.setProperty('--pct', pct + '%');
-}
-updateSlider(document.getElementById('confidence'));
+// ══════════════════════════════════════════
+// BASE DE DATOS DE EQUIPOS
+// ══════════════════════════════════════════
+const TEAMS = [
+  // Premier League
+  {n:"Arsenal",         d:"ARSENAL",           f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Aston Villa",     d:"ASTON VILLA",        f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Brentford",       d:"BRENTFORD",          f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Brighton",        d:"BRIGHTON",           f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Chelsea",         d:"CHELSEA",            f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Crystal Palace",  d:"CRYSTAL PALACE",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Everton",         d:"EVERTON",            f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Fulham",          d:"FULHAM",             f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Liverpool",       d:"LIVERPOOL",          f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Man City",        d:"MAN CITY",           f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Manchester City", d:"MAN CITY",           f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Man United",      d:"MAN UNITED",         f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Manchester United",d:"MAN UNITED",        f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Newcastle",       d:"NEWCASTLE",          f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Nottingham Forest",d:"NOTT'M FOREST",     f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Tottenham",       d:"TOTTENHAM",          f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"West Ham",        d:"WEST HAM",           f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Wolves",          d:"WOLVES",             f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Ipswich",         d:"IPSWICH",            f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Leicester",       d:"LEICESTER",          f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Southampton",     d:"SOUTHAMPTON",        f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  {n:"Bournemouth",     d:"BOURNEMOUTH",        f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", l:"Premier League"},
+  // La Liga
+  {n:"Real Madrid",     d:"REAL MADRID",        f:"🇪🇸", l:"La Liga"},
+  {n:"Barcelona",       d:"BARCELONA",          f:"🇪🇸", l:"La Liga"},
+  {n:"Atletico Madrid", d:"ATLÉTICO MADRID",    f:"🇪🇸", l:"La Liga"},
+  {n:"Atlético Madrid", d:"ATLÉTICO MADRID",    f:"🇪🇸", l:"La Liga"},
+  {n:"Athletic Club",   d:"ATHLETIC CLUB",      f:"🇪🇸", l:"La Liga"},
+  {n:"Real Sociedad",   d:"REAL SOCIEDAD",      f:"🇪🇸", l:"La Liga"},
+  {n:"Villarreal",      d:"VILLARREAL",         f:"🇪🇸", l:"La Liga"},
+  {n:"Valencia",        d:"VALENCIA",           f:"🇪🇸", l:"La Liga"},
+  {n:"Sevilla",         d:"SEVILLA",            f:"🇪🇸", l:"La Liga"},
+  {n:"Betis",           d:"BETIS",              f:"🇪🇸", l:"La Liga"},
+  {n:"Osasuna",         d:"OSASUNA",            f:"🇪🇸", l:"La Liga"},
+  {n:"Celta Vigo",      d:"CELTA VIGO",         f:"🇪🇸", l:"La Liga"},
+  {n:"Getafe",          d:"GETAFE",             f:"🇪🇸", l:"La Liga"},
+  {n:"Rayo Vallecano",  d:"RAYO VALLECANO",     f:"🇪🇸", l:"La Liga"},
+  {n:"Espanyol",        d:"ESPANYOL",           f:"🇪🇸", l:"La Liga"},
+  {n:"Las Palmas",      d:"LAS PALMAS",         f:"🇪🇸", l:"La Liga"},
+  {n:"Leganés",         d:"LEGANÉS",            f:"🇪🇸", l:"La Liga"},
+  {n:"Mallorca",        d:"MALLORCA",           f:"🇪🇸", l:"La Liga"},
+  {n:"Girona",          d:"GIRONA",             f:"🇪🇸", l:"La Liga"},
+  // Bundesliga
+  {n:"Bayern Munich",   d:"BAYERN MUNICH",      f:"🇩🇪", l:"Bundesliga"},
+  {n:"Bayern",          d:"BAYERN MUNICH",      f:"🇩🇪", l:"Bundesliga"},
+  {n:"Borussia Dortmund",d:"DORTMUND",          f:"🇩🇪", l:"Bundesliga"},
+  {n:"Dortmund",        d:"DORTMUND",           f:"🇩🇪", l:"Bundesliga"},
+  {n:"Bayer Leverkusen",d:"LEVERKUSEN",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Leverkusen",      d:"LEVERKUSEN",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"RB Leipzig",      d:"RB LEIPZIG",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Leipzig",         d:"RB LEIPZIG",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Frankfurt",       d:"FRANKFURT",          f:"🇩🇪", l:"Bundesliga"},
+  {n:"Eintracht Frankfurt",d:"FRANKFURT",       f:"🇩🇪", l:"Bundesliga"},
+  {n:"Mönchengladbach", d:"M'GLADBACH",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Gladbach",        d:"M'GLADBACH",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"M'Gladbach",      d:"M'GLADBACH",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Borussia Mönchengladbach",d:"M'GLADBACH", f:"🇩🇪", l:"Bundesliga"},
+  {n:"Wolfsburg",       d:"WOLFSBURG",          f:"🇩🇪", l:"Bundesliga"},
+  {n:"Stuttgart",       d:"STUTTGART",          f:"🇩🇪", l:"Bundesliga"},
+  {n:"Freiburg",        d:"FREIBURG",           f:"🇩🇪", l:"Bundesliga"},
+  {n:"Union Berlin",    d:"UNION BERLIN",       f:"🇩🇪", l:"Bundesliga"},
+  {n:"Werder Bremen",   d:"WERDER",             f:"🇩🇪", l:"Bundesliga"},
+  {n:"Mainz 05",        d:"MAINZ 05",           f:"🇩🇪", l:"Bundesliga"},
+  {n:"Mainz",           d:"MAINZ 05",           f:"🇩🇪", l:"Bundesliga"},
+  {n:"Augsburg",        d:"AUGSBURG",           f:"🇩🇪", l:"Bundesliga"},
+  {n:"Hoffenheim",      d:"HOFFENHEIM",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Bochum",          d:"BOCHUM",             f:"🇩🇪", l:"Bundesliga"},
+  {n:"Heidenheim",      d:"HEIDENHEIM",         f:"🇩🇪", l:"Bundesliga"},
+  {n:"Holstein Kiel",   d:"KIEL",               f:"🇩🇪", l:"Bundesliga"},
+  {n:"St. Pauli",       d:"ST. PAULI",          f:"🇩🇪", l:"Bundesliga"},
+  // Serie A
+  {n:"Inter Milan",     d:"INTER MILAN",        f:"🇮🇹", l:"Serie A"},
+  {n:"Inter",           d:"INTER MILAN",        f:"🇮🇹", l:"Serie A"},
+  {n:"AC Milan",        d:"AC MILAN",           f:"🇮🇹", l:"Serie A"},
+  {n:"Milan",           d:"AC MILAN",           f:"🇮🇹", l:"Serie A"},
+  {n:"Juventus",        d:"JUVENTUS",           f:"🇮🇹", l:"Serie A"},
+  {n:"Napoli",          d:"NAPOLI",             f:"🇮🇹", l:"Serie A"},
+  {n:"Roma",            d:"ROMA",               f:"🇮🇹", l:"Serie A"},
+  {n:"Lazio",           d:"LAZIO",              f:"🇮🇹", l:"Serie A"},
+  {n:"Fiorentina",      d:"FIORENTINA",         f:"🇮🇹", l:"Serie A"},
+  {n:"Atalanta",        d:"ATALANTA",           f:"🇮🇹", l:"Serie A"},
+  {n:"Torino",          d:"TORINO",             f:"🇮🇹", l:"Serie A"},
+  {n:"Bologna",         d:"BOLOGNA",            f:"🇮🇹", l:"Serie A"},
+  {n:"Genoa",           d:"GENOA",              f:"🇮🇹", l:"Serie A"},
+  {n:"Udinese",         d:"UDINESE",            f:"🇮🇹", l:"Serie A"},
+  {n:"Cagliari",        d:"CAGLIARI",           f:"🇮🇹", l:"Serie A"},
+  {n:"Parma",           d:"PARMA",              f:"🇮🇹", l:"Serie A"},
+  {n:"Empoli",          d:"EMPOLI",             f:"🇮🇹", l:"Serie A"},
+  {n:"Hellas Verona",   d:"VERONA",             f:"🇮🇹", l:"Serie A"},
+  {n:"Como",            d:"COMO",               f:"🇮🇹", l:"Serie A"},
+  {n:"Venezia",         d:"VENEZIA",            f:"🇮🇹", l:"Serie A"},
+  {n:"Lecce",           d:"LECCE",              f:"🇮🇹", l:"Serie A"},
+  {n:"Monza",           d:"MONZA",              f:"🇮🇹", l:"Serie A"},
+  // Ligue 1
+  {n:"PSG",             d:"PSG",                f:"🇫🇷", l:"Ligue 1"},
+  {n:"Paris Saint-Germain",d:"PSG",             f:"🇫🇷", l:"Ligue 1"},
+  {n:"Marseille",       d:"MARSEILLE",          f:"🇫🇷", l:"Ligue 1"},
+  {n:"Monaco",          d:"MONACO",             f:"🇫🇷", l:"Ligue 1"},
+  {n:"Lyon",            d:"LYON",               f:"🇫🇷", l:"Ligue 1"},
+  {n:"Lille",           d:"LILLE",              f:"🇫🇷", l:"Ligue 1"},
+  {n:"Nice",            d:"NICE",               f:"🇫🇷", l:"Ligue 1"},
+  {n:"Lens",            d:"LENS",               f:"🇫🇷", l:"Ligue 1"},
+  {n:"Rennes",          d:"RENNES",             f:"🇫🇷", l:"Ligue 1"},
+  {n:"Nantes",          d:"NANTES",             f:"🇫🇷", l:"Ligue 1"},
+  {n:"Strasbourg",      d:"STRASBOURG",         f:"🇫🇷", l:"Ligue 1"},
+  // Europa
+  {n:"Ajax",            d:"AJAX",               f:"🇳🇱", l:"Eredivisie"},
+  {n:"PSV",             d:"PSV",                f:"🇳🇱", l:"Eredivisie"},
+  {n:"Feyenoord",       d:"FEYENOORD",          f:"🇳🇱", l:"Eredivisie"},
+  {n:"Benfica",         d:"BENFICA",            f:"🇵🇹", l:"Primeira Liga"},
+  {n:"Porto",           d:"PORTO",              f:"🇵🇹", l:"Primeira Liga"},
+  {n:"Sporting CP",     d:"SPORTING CP",        f:"🇵🇹", l:"Primeira Liga"},
+  {n:"Celtic",          d:"CELTIC",             f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", l:"Scottish Premiership"},
+  {n:"Rangers",         d:"RANGERS",            f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿", l:"Scottish Premiership"},
+  {n:"RB Salzburg",     d:"RB SALZBURG",        f:"🇦🇹", l:"Austrian Bundesliga"},
+  {n:"Club Brugge",     d:"CLUB BRUGGE",        f:"🇧🇪", l:"Pro League"},
+  {n:"Anderlecht",      d:"ANDERLECHT",         f:"🇧🇪", l:"Pro League"},
+  {n:"Galatasaray",     d:"GALATASARAY",        f:"🇹🇷", l:"Süper Lig"},
+  {n:"Fenerbahce",      d:"FENERBAHÇE",         f:"🇹🇷", l:"Süper Lig"},
+  {n:"Besiktas",        d:"BEŞİKTAŞ",           f:"🇹🇷", l:"Süper Lig"},
+  // Sudamérica
+  {n:"Flamengo",        d:"FLAMENGO",           f:"🇧🇷", l:"Brasileirão"},
+  {n:"Palmeiras",       d:"PALMEIRAS",          f:"🇧🇷", l:"Brasileirão"},
+  {n:"Corinthians",     d:"CORINTHIANS",        f:"🇧🇷", l:"Brasileirão"},
+  {n:"Santos",          d:"SANTOS",             f:"🇧🇷", l:"Brasileirão"},
+  {n:"São Paulo",       d:"SÃO PAULO",          f:"🇧🇷", l:"Brasileirão"},
+  {n:"River Plate",     d:"RIVER PLATE",        f:"🇦🇷", l:"Liga Profesional"},
+  {n:"Boca Juniors",    d:"BOCA JUNIORS",       f:"🇦🇷", l:"Liga Profesional"},
+  {n:"Racing Club",     d:"RACING CLUB",        f:"🇦🇷", l:"Liga Profesional"},
+  {n:"Independiente",   d:"INDEPENDIENTE",      f:"🇦🇷", l:"Liga Profesional"},
+  {n:"Nacional",        d:"NACIONAL",           f:"🇺🇾", l:"Primera División UY"},
+  {n:"Peñarol",         d:"PEÑAROL",            f:"🇺🇾", l:"Primera División UY"},
+  {n:"Millonarios",     d:"MILLONARIOS",        f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"América de Cali", d:"AMÉRICA",            f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Junior",          d:"JUNIOR",             f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Deportivo Cali",  d:"DEP. CALI",          f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Atlético Nacional",d:"ATL. NACIONAL",     f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Once Caldas",     d:"ONCE CALDAS",        f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Santa Fe",        d:"SANTA FE",           f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Medellín",        d:"MEDELLÍN",           f:"🇨🇴", l:"Liga BetPlay"},
+  {n:"Colo-Colo",       d:"COLO-COLO",          f:"🇨🇱", l:"Primera División CL"},
+  {n:"Universidad de Chile",d:"U. DE CHILE",    f:"🇨🇱", l:"Primera División CL"},
+  // Liga MX
+  {n:"Club América",    d:"CLUB AMÉRICA",       f:"🇲🇽", l:"Liga MX"},
+  {n:"América",         d:"CLUB AMÉRICA",       f:"🇲🇽", l:"Liga MX"},
+  {n:"Chivas",          d:"CHIVAS",             f:"🇲🇽", l:"Liga MX"},
+  {n:"Cruz Azul",       d:"CRUZ AZUL",          f:"🇲🇽", l:"Liga MX"},
+  {n:"Pumas",           d:"PUMAS",              f:"🇲🇽", l:"Liga MX"},
+  {n:"Tigres",          d:"TIGRES",             f:"🇲🇽", l:"Liga MX"},
+  {n:"Monterrey",       d:"MONTERREY",          f:"🇲🇽", l:"Liga MX"},
+  // MLS
+  {n:"Inter Miami",     d:"INTER MIAMI",        f:"🇺🇸", l:"MLS"},
+  {n:"LA Galaxy",       d:"LA GALAXY",          f:"🇺🇸", l:"MLS"},
+  {n:"LAFC",            d:"LAFC",               f:"🇺🇸", l:"MLS"},
+  {n:"Seattle Sounders",d:"SEATTLE",            f:"🇺🇸", l:"MLS"},
+  {n:"Atlanta United",  d:"ATLANTA",            f:"🇺🇸", l:"MLS"},
+];
 
-// ── Sport icon map ──
-const SPORT_ICONS = {
-  '⚽ FÚTBOL': '⚽', '🏀 NBA': '🏀', '🏈 NFL': '🏈',
-  '⚾ MLB': '⚾', '🎾 TENIS': '🎾', '🥊 MMA/UFC': '🥊', '🏆 OTRO': '🏆'
+// ══════════════════════════════════════════
+// AUTOCOMPLETE
+// ══════════════════════════════════════════
+const acState = {
+  ac1: { idx: -1, results: [] },
+  ac2: { idx: -1, results: [] },
 };
 
-// ── Confidence color ──
-function confColor(v) {
-  if (v >= 85) return '#4CAF50';
-  if (v >= 70) return '#F5C030';
-  return '#E07030';
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ']/g,'');
 }
 
-// ── Confidence label ──
-function confLabel(v) {
-  if (v >= 85) return 'ALTA CONFIANZA';
-  if (v >= 70) return 'CONFIANZA MEDIA';
-  return 'PICK DE RIESGO';
+function acSearch(input, dropId, inputId) {
+  const q = normalize(input.value);
+  const drop = document.getElementById(dropId);
+  acState[dropId].idx = -1;
+
+  if (!q || q.length < 1) { drop.style.display = 'none'; return; }
+
+  // Deduplicate by display name
+  const seen = new Set();
+  const matches = TEAMS.filter(t => {
+    const match = normalize(t.n).includes(q) || normalize(t.d).includes(q) || normalize(t.l).includes(q);
+    if (match && !seen.has(t.d)) { seen.add(t.d); return true; }
+    return false;
+  }).slice(0, 9);
+
+  acState[dropId].results = matches;
+  if (!matches.length) { drop.style.display = 'none'; return; }
+
+  drop.innerHTML = matches.map((t, i) => `
+    <div class="ac-item" data-i="${i}"
+      onmousedown="acSelect('${dropId}','${inputId}',${i})">
+      <span class="ac-flag">${t.f}</span>
+      <div class="ac-info">
+        <span class="ac-name">${t.d}</span>
+        <span class="ac-meta">${t.l}</span>
+      </div>
+    </div>`).join('');
+  drop.style.display = 'block';
 }
 
-// ── Word wrap helper ──
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+function acSelect(dropId, inputId, idx) {
+  const team = acState[dropId].results[idx];
+  if (!team) return;
+  document.getElementById(inputId).value = team.d;
+  document.getElementById(dropId).style.display = 'none';
+  autoFillMeta(team);
+}
+
+let leagueManual = false, flagManual = false;
+document.getElementById('league').addEventListener('input', function() { leagueManual = !!this.value; });
+document.getElementById('flag').addEventListener('input', function()   { flagManual   = !!this.value; });
+
+function autoFillMeta(team) {
+  if (!leagueManual) document.getElementById('league').value = team.l;
+  if (!flagManual)   document.getElementById('flag').value   = team.f;
+}
+
+function acKey(e, dropId, inputId) {
+  const drop = document.getElementById(dropId);
+  const items = drop.querySelectorAll('.ac-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    acState[dropId].idx = Math.min(acState[dropId].idx + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('active', i === acState[dropId].idx));
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    acState[dropId].idx = Math.max(acState[dropId].idx - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('active', i === acState[dropId].idx));
+  } else if (e.key === 'Enter' || e.key === 'Tab') {
+    if (acState[dropId].idx >= 0) { e.preventDefault(); acSelect(dropId, inputId, acState[dropId].idx); }
+  } else if (e.key === 'Escape') {
+    drop.style.display = 'none';
+  }
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap'))
+    document.querySelectorAll('.ac-dropdown').forEach(d => d.style.display = 'none');
+});
+
+// ══════════════════════════════════════════
+// BET LABELS
+// ══════════════════════════════════════════
+const BET_EN = {
+  'AMBOS MARCAN':'BOTH TEAMS TO SCORE',
+  'MÁS DE 2.5 GOLES':'OVER 2.5 GOALS',
+  'MÁS DE 3.5 GOLES':'OVER 3.5 GOALS',
+  'MENOS DE 2.5 GOLES':'UNDER 2.5 GOALS',
+  'VICTORIA LOCAL':'HOME WIN',
+  'VICTORIA VISITANTE':'AWAY WIN',
+  'EMPATE':'DRAW',
+  'HÁNDICAP':'HANDICAP',
+  'DOBLE OPORTUNIDAD':'DOUBLE CHANCE',
+  'PRIMER GOL':'FIRST GOAL SCORER',
+  'PERSONALIZADO':''
+};
+function syncBetLabel(selId, inId) {
+  const v = document.getElementById(selId).value;
+  document.getElementById(inId).value = BET_EN[v] || '';
+  const cb = selId === 'betType1' ? 'customBet1Block' : 'customBet2Block';
+  document.getElementById(cb).style.display = v === 'PERSONALIZADO' ? 'block' : 'none';
+}
+syncBetLabel('betType1','betLabel1');
+syncBetLabel('betType2','betLabel2');
+
+function togglePick2() {
+  document.getElementById('pick2Block').classList.toggle('visible', document.getElementById('enablePick2').checked);
+}
+
+// ══════════════════════════════════════════
+// CANVAS HELPERS
+// ══════════════════════════════════════════
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function wrapCentered(ctx, text, cx, y, maxW, lineH) {
   const words = text.split(' ');
-  let line = '';
-  let lines = [];
-  for (let w of words) {
+  let line = '', lines = [];
+  for (const w of words) {
     const test = line + w + ' ';
-    if (ctx.measureText(test).width > maxWidth && line !== '') {
-      lines.push(line.trim());
-      line = w + ' ';
-    } else {
-      line = test;
-    }
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line.trim()); line = w + ' '; }
+    else line = test;
   }
   if (line) lines.push(line.trim());
-  lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineHeight));
+  lines.forEach((l, i) => ctx.fillText(l, cx, y + i * lineH));
   return lines.length;
 }
 
-// ── Draw basketball SVG path on canvas ──
-function drawBball(ctx, cx, cy, r, goldGrad) {
-  ctx.strokeStyle = goldGrad;
-  ctx.lineWidth = 1.6;
-  ctx.lineCap = 'round';
-
-  // circle
-  ctx.beginPath();
-  ctx.arc(cx, cy, r, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // horizontal seam
-  ctx.beginPath();
-  ctx.moveTo(cx - r, cy);
-  ctx.bezierCurveTo(cx - r * 0.4, cy - r * 0.3, cx + r * 0.4, cy + r * 0.3, cx + r, cy);
-  ctx.stroke();
-
-  // vertical seam
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - r);
-  ctx.bezierCurveTo(cx - r * 0.3, cy - r * 0.4, cx + r * 0.3, cy + r * 0.4, cx, cy + r);
-  ctx.stroke();
-
-  // left arc
-  ctx.beginPath();
-  ctx.moveTo(cx - r * 0.6, cy - r * 0.8);
-  ctx.bezierCurveTo(cx - r * 1.1, cy - r * 0.1, cx - r * 0.9, cy + r * 0.5, cx - r * 0.6, cy + r * 0.8);
-  ctx.stroke();
-
-  // right arc
-  ctx.beginPath();
-  ctx.moveTo(cx + r * 0.6, cy - r * 0.8);
-  ctx.bezierCurveTo(cx + r * 1.1, cy - r * 0.1, cx + r * 0.9, cy + r * 0.5, cx + r * 0.6, cy + r * 0.8);
-  ctx.stroke();
+function drawGrid(ctx, size) {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,255,255,0.045)'; ctx.lineWidth = 1;
+  for (let v = size/6; v < size; v += size/6) {
+    ctx.beginPath(); ctx.moveTo(v,0); ctx.lineTo(v,size); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,v); ctx.lineTo(size,v); ctx.stroke();
+  }
+  ctx.restore();
 }
 
-// ── MAIN GENERATE ──
+// ══════════════════════════════════════════
+// GENERATE IMAGE
+// ══════════════════════════════════════════
 async function generateImage() {
   const btn = document.getElementById('btnGenerate');
   const spinner = document.getElementById('spinner');
   const statusEl = document.getElementById('status');
   const canvas = document.getElementById('pickCanvas');
-  const placeholder = document.getElementById('placeholder');
 
-  const sport    = document.getElementById('sport').value;
-  const team1    = document.getElementById('team1').value || 'Equipo A';
-  const team2    = document.getElementById('team2').value || 'Equipo B';
-  const betType  = document.getElementById('betType').value;
-  const odds     = document.getElementById('odds').value || '—';
-  const analysis = document.getElementById('analysis').value || '';
-  const conf     = parseInt(document.getElementById('confidence').value);
-  const league   = document.getElementById('league').value || '';
-  const date     = document.getElementById('matchDate').value || '';
+  const league    = document.getElementById('league').value.trim();
+  const flag      = document.getElementById('flag').value.trim();
+  const matchDate = document.getElementById('matchDate').value.trim();
+  const matchTime = document.getElementById('matchTime').value.trim();
+  const team1     = document.getElementById('team1').value.trim() || 'EQUIPO A';
+  const team2     = document.getElementById('team2').value.trim() || 'EQUIPO B';
+
+  let bet1 = document.getElementById('betType1').value;
+  if (bet1 === 'PERSONALIZADO') bet1 = (document.getElementById('customBet1').value.trim() || 'PICK 1').toUpperCase();
+  const label1 = document.getElementById('betLabel1').value.trim().toUpperCase();
+  const odds1  = document.getElementById('odds1').value.trim() || '—';
+  const stake1 = document.getElementById('stake1').value.trim() || '—';
+
+  const hasPick2 = document.getElementById('enablePick2').checked;
+  let bet2='', label2='', odds2='', stake2='';
+  if (hasPick2) {
+    bet2  = document.getElementById('betType2').value;
+    if (bet2==='PERSONALIZADO') bet2 = (document.getElementById('customBet2').value.trim()||'PICK 2').toUpperCase();
+    label2 = document.getElementById('betLabel2').value.trim().toUpperCase();
+    odds2  = document.getElementById('odds2').value.trim() || '—';
+    stake2 = document.getElementById('stake2').value.trim() || '—';
+  }
 
   btn.disabled = true;
   spinner.style.display = 'block';
-  placeholder.style.display = 'none';
+  document.getElementById('placeholder').style.display = 'none';
   canvas.style.display = 'none';
-  statusEl.textContent = 'Generando análisis con IA...';
-  statusEl.className = 'status';
+  statusEl.textContent = 'Renderizando…'; statusEl.className = 'status';
+  await new Promise(r => setTimeout(r, 30));
 
-  // ── Ask Claude for a sharp 2-line analysis ──
-  let aiAnalysis = analysis;
-  try {
-    const prompt = `Eres un tipster profesional de apuestas deportivas. 
-Genera un análisis conciso y contundente de máximo 2 líneas (máx 160 caracteres total) para este pick:
-- Partido: ${team1} vs ${team2}
-- Deporte: ${sport}
-- Apuesta: ${betType}
-- Análisis base: ${analysis || 'sin análisis'}
-Responde SOLO el análisis, sin comillas, sin emojis, sin explicaciones extra.`;
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    if (data.content && data.content[0]) {
-      aiAnalysis = data.content[0].text.trim().slice(0, 180);
-    }
-    statusEl.textContent = 'Análisis generado ✦ Renderizando...';
-    statusEl.className = 'status ok';
-  } catch(e) {
-    statusEl.textContent = 'IA no disponible — usando análisis manual';
-    statusEl.className = 'status err';
-  }
-
-  // ── RENDER CANVAS ──
-  const SIZE = 1080;
-  canvas.width = SIZE;
-  canvas.height = SIZE;
+  const S = 1080;
+  canvas.width = S; canvas.height = S;
   const ctx = canvas.getContext('2d');
 
-  // Background
-  ctx.fillStyle = '#070707';
-  ctx.fillRect(0, 0, SIZE, SIZE);
+  ctx.fillStyle = '#0d1017'; ctx.fillRect(0,0,S,S);
+  drawGrid(ctx, S);
+  const vig = ctx.createRadialGradient(S/2,S/2,S*0.25,S/2,S/2,S*0.75);
+  vig.addColorStop(0,'rgba(0,0,0,0)'); vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle = vig; ctx.fillRect(0,0,S,S);
 
-  // Subtle radial glow
-  const bgGlow = ctx.createRadialGradient(SIZE/2, SIZE*0.38, 0, SIZE/2, SIZE*0.38, SIZE*0.45);
-  bgGlow.addColorStop(0, 'rgba(180,120,10,0.10)');
-  bgGlow.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = bgGlow;
-  ctx.fillRect(0, 0, SIZE, SIZE);
-
-  // Gold gradient helper
-  const mkGold = (x1,y1,x2,y2) => {
+  const mkG = (x1,y1,x2,y2) => {
     const g = ctx.createLinearGradient(x1,y1,x2,y2);
-    g.addColorStop(0,   '#C8860A');
-    g.addColorStop(0.4, '#F5C030');
-    g.addColorStop(0.7, '#D4920C');
-    g.addColorStop(1,   '#8B5E08');
+    g.addColorStop(0,'#8B5E08'); g.addColorStop(0.35,'#F5C030');
+    g.addColorStop(0.65,'#D4920C'); g.addColorStop(1,'#8B5E08');
     return g;
   };
 
-  // ── TOP HEADER BAR ──
-  const hdr = ctx.createLinearGradient(0, 0, SIZE, 0);
-  hdr.addColorStop(0,   '#8B5E08');
-  hdr.addColorStop(0.5, '#D4920C');
-  hdr.addColorStop(1,   '#8B5E08');
-  ctx.fillStyle = hdr;
-  ctx.fillRect(0, 0, SIZE, 90);
+  // Gold bars
+  ctx.fillStyle = mkG(0,0,S,0); ctx.fillRect(0,0,S,10);
 
-  // Brand name in header
-  ctx.fillStyle = '#070707';
-  ctx.font = 'bold 38px Georgia, serif';
-  ctx.letterSpacing = '4px';
-  ctx.textAlign = 'center';
-  ctx.fillText('NATION PARLEY', SIZE/2, 58);
-
-  // Sport label pill — top right
-  ctx.fillStyle = 'rgba(0,0,0,0.35)';
-  roundRect(ctx, SIZE - 200, 18, 175, 54, 8);
-  ctx.fill();
-  ctx.fillStyle = '#F5C030';
-  ctx.font = 'bold 22px "Barlow Condensed", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText(SPORT_ICONS[sport] + '  ' + sport.replace(/^.\s/, ''), SIZE - 112, 52);
-
-  // ── MATCH SECTION ──
-  const matchY = 130;
-
-  // League + date line
-  if (league || date) {
-    ctx.fillStyle = 'rgba(245,192,48,0.55)';
-    ctx.font = '600 22px "Barlow Condensed", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.letterSpacing = '3px';
-    const meta = [league, date].filter(Boolean).join('  •  ').toUpperCase();
-    ctx.fillText(meta, SIZE/2, matchY + 10);
-  }
-
-  // Divider line
-  ctx.strokeStyle = mkGold(0, 0, SIZE, 0);
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(80, matchY + 28); ctx.lineTo(SIZE - 80, matchY + 28);
-  ctx.stroke();
+  // Meta line
+  const parts = [];
+  if (flag) parts.push(flag);
+  if (league) parts.push(league.toUpperCase());
+  if (matchDate) parts.push(matchDate.toUpperCase());
+  if (matchTime) parts.push(matchTime.toUpperCase());
+  ctx.font = '600 26px "Barlow Condensed",sans-serif';
+  ctx.fillStyle = 'rgba(200,180,130,0.65)';
+  ctx.textAlign = 'center'; ctx.letterSpacing = '3px';
+  ctx.fillText(parts.join('  •  '), S/2, 72);
 
   // Teams
-  ctx.font = 'bold 88px "Barlow Condensed", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.letterSpacing = '0px';
+  const tY = 185;
+  function fitFont(name, max, maxW) {
+    let sz = max;
+    ctx.font = `900 ${sz}px "Barlow Condensed",sans-serif`;
+    while (ctx.measureText(name).width > maxW && sz > 46) { sz -= 4; ctx.font = `900 ${sz}px "Barlow Condensed",sans-serif`; }
+    return sz;
+  }
+  const hw = S/2 - 82;
+  const sz1 = fitFont(team1.toUpperCase(), 96, hw);
+  const sz2 = fitFont(team2.toUpperCase(), 96, hw);
 
-  // Team 1
-  ctx.textAlign = 'right';
-  ctx.fillText(team1.toUpperCase(), SIZE/2 - 60, matchY + 120);
+  ctx.font = `900 ${sz1}px "Barlow Condensed",sans-serif`;
+  ctx.fillStyle = '#FFFFFF'; ctx.textAlign = 'right'; ctx.letterSpacing = '-1px';
+  ctx.fillText(team1.toUpperCase(), S/2 - 54, tY);
 
-  // VS
-  ctx.font = '600 34px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = mkGold(SIZE/2 - 30, 0, SIZE/2 + 30, 0);
-  ctx.textAlign = 'center';
-  ctx.fillText('VS', SIZE/2, matchY + 102);
+  // VS box
+  const vw=86,vh=46;
+  ctx.fillStyle = 'rgba(212,146,12,0.18)';
+  roundRect(ctx, S/2-vw/2, tY-vh+6, vw, vh, 6); ctx.fill();
+  ctx.strokeStyle = mkG(S/2-vw/2,0,S/2+vw/2,0); ctx.lineWidth = 1.2;
+  roundRect(ctx, S/2-vw/2, tY-vh+6, vw, vh, 6); ctx.stroke();
+  ctx.font = '700 28px "Barlow Condensed",sans-serif';
+  ctx.fillStyle = 'rgba(245,192,48,0.9)'; ctx.textAlign = 'center'; ctx.letterSpacing = '1px';
+  ctx.fillText('VS', S/2, tY - 4);
 
-  // Team 2
-  ctx.font = 'bold 88px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.textAlign = 'left';
-  ctx.fillText(team2.toUpperCase(), SIZE/2 + 60, matchY + 120);
+  ctx.font = `900 ${sz2}px "Barlow Condensed",sans-serif`;
+  ctx.fillStyle = '#9aa0b0'; ctx.textAlign = 'left'; ctx.letterSpacing = '-1px';
+  ctx.fillText(team2.toUpperCase(), S/2 + 54, tY);
 
-  // ── PICK BOX ──
-  const pickY = matchY + 160;
+  // Cards
+  const cTop = tY + 68, cH = 360, pad = 60, gp = 22;
+  if (hasPick2) {
+    const cW = (S - pad*2 - gp) / 2;
+    drawCard(ctx, pad, cTop, cW, cH, 'PICK #1', bet1, label1, odds1, stake1, mkG);
+    drawCard(ctx, pad+cW+gp, cTop, cW, cH, 'PICK #2', bet2, label2, odds2, stake2, mkG);
+  } else {
+    drawCard(ctx, pad, cTop, S-pad*2, cH, 'PICK #1', bet1, label1, odds1, stake1, mkG);
+  }
 
-  ctx.strokeStyle = mkGold(0, pickY, SIZE, pickY + 100);
-  ctx.lineWidth = 1.5;
-  roundRectStroke(ctx, 60, pickY, SIZE - 120, 110, 10);
+  // Disclaimer
+  ctx.font = '400 19px "Barlow Condensed",sans-serif';
+  ctx.fillStyle = 'rgba(160,150,130,0.38)';
+  ctx.textAlign = 'center'; ctx.letterSpacing = '1px';
+  ctx.fillText('Análisis estadístico informativo  •  Solo para mayores de 18 años  •  Juega con responsabilidad', S/2, cTop+cH+56);
 
-  ctx.fillStyle = 'rgba(212,146,12,0.06)';
-  roundRect(ctx, 60, pickY, SIZE - 120, 110, 10);
-  ctx.fill();
+  // Bottom bar
+  ctx.fillStyle = mkG(0,0,S,0); ctx.fillRect(0,S-10,S,10);
 
-  // Pick label
-  ctx.font = '600 18px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = 'rgba(245,192,48,0.6)';
-  ctx.textAlign = 'left';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('PICK', 100, pickY + 32);
-
-  // Bet type
-  ctx.font = 'bold 46px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = mkGold(100, 0, 700, 0);
-  ctx.letterSpacing = '1px';
-  ctx.fillText(betType.toUpperCase(), 100, pickY + 82);
-
-  // Odds
-  ctx.font = 'bold 62px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.textAlign = 'right';
-  ctx.letterSpacing = '0px';
-  ctx.fillText('@  ' + odds, SIZE - 100, pickY + 86);
-
-  // ── CONFIDENCE BAR ──
-  const barY = pickY + 140;
-  ctx.fillStyle = '#1a1a1a';
-  roundRect(ctx, 60, barY, SIZE - 120, 52, 8);
-  ctx.fill();
-
-  const barFill = ctx.createLinearGradient(60, 0, 60 + (SIZE - 120) * conf / 100, 0);
-  barFill.addColorStop(0,   confColor(conf) + 'AA');
-  barFill.addColorStop(1,   confColor(conf));
-  ctx.fillStyle = barFill;
-  roundRect(ctx, 60, barY, (SIZE - 120) * conf / 100, 52, 8);
-  ctx.fill();
-
-  ctx.font = 'bold 22px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = '#000';
-  ctx.textAlign = 'left';
-  ctx.letterSpacing = '2px';
-  ctx.fillText(confLabel(conf) + '  ' + conf + '%', 84, barY + 33);
-
-  // ── ANALYSIS ──
-  const anaY = barY + 80;
-
-  ctx.strokeStyle = 'rgba(212,146,12,0.2)';
-  ctx.lineWidth = 1;
-  roundRectStroke(ctx, 60, anaY, SIZE - 120, 180, 10);
-  ctx.fillStyle = 'rgba(255,255,255,0.02)';
-  roundRect(ctx, 60, anaY, SIZE - 120, 180, 10);
-  ctx.fill();
-
-  ctx.font = '600 17px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = 'rgba(245,192,48,0.55)';
-  ctx.textAlign = 'left';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('ANÁLISIS', 100, anaY + 32);
-
-  ctx.font = '400 28px Georgia, serif';
-  ctx.fillStyle = 'rgba(232,224,208,0.88)';
-  ctx.letterSpacing = '0px';
-  wrapText(ctx, aiAnalysis, 100, anaY + 68, SIZE - 220, 38);
-
-  // ── BASKETBALL WATERMARK (top-left area, faint) ──
-  ctx.save();
-  ctx.globalAlpha = 0.07;
-  const wmGold = ctx.createLinearGradient(0,0,200,200);
-  wmGold.addColorStop(0,'#F5C030'); wmGold.addColorStop(1,'#8B5E08');
-  drawBball(ctx, 100, 700, 70, wmGold);
-  ctx.restore();
-
-  // ── FOOTER ──
-  const footY = SIZE - 90;
-  ctx.fillStyle = 'rgba(212,146,12,0.08)';
-  ctx.fillRect(0, footY, SIZE, 90);
-
-  ctx.strokeStyle = mkGold(0, footY, SIZE, footY);
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, footY); ctx.lineTo(SIZE, footY);
-  ctx.stroke();
-
-  // Basketball icon in footer
-  ctx.save();
-  ctx.globalAlpha = 0.85;
-  const fGold = mkGold(SIZE/2 - 28, 0, SIZE/2 + 28, 0);
-  drawBball(ctx, SIZE/2 - 180, footY + 44, 22, fGold);
-  ctx.restore();
-
-  ctx.font = '600 24px Georgia, serif';
-  ctx.fillStyle = mkGold(SIZE/2 - 100, 0, SIZE/2 + 100, 0);
-  ctx.textAlign = 'center';
-  ctx.letterSpacing = '2px';
-  ctx.fillText('Nation Parley', SIZE/2 - 120, footY + 52);
-
-  ctx.font = '400 18px "Barlow Condensed", sans-serif';
-  ctx.fillStyle = 'rgba(212,146,12,0.4)';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('JUEGA CON INTELIGENCIA', SIZE/2 + 140, footY + 52);
-
-  // ── SHOW ──
   spinner.style.display = 'none';
   canvas.style.display = 'block';
   document.getElementById('btnDownload').style.display = 'block';
   btn.disabled = false;
-  statusEl.textContent = '✦ Imagen lista para descargar';
-  statusEl.className = 'status ok';
+  statusEl.textContent = '✦ Imagen lista'; statusEl.className = 'status ok';
 }
 
-// ── Download ──
+function drawCard(ctx, x, y, w, h, num, bet, lbl, odds, stake, mkG) {
+  ctx.fillStyle = 'rgba(20,22,30,0.93)'; roundRect(ctx,x,y,w,h,14); ctx.fill();
+  ctx.strokeStyle = mkG(x,y,x+w,y); ctx.lineWidth = 1.8; roundRect(ctx,x,y,w,h,14); ctx.stroke();
+  ctx.strokeStyle = 'rgba(245,192,48,0.1)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(x+18,y+1.5); ctx.lineTo(x+w-18,y+1.5); ctx.stroke();
+
+  const cx = x + w/2;
+
+  // Pick number
+  ctx.font = '600 20px "Barlow Condensed",sans-serif';
+  ctx.fillStyle = 'rgba(212,146,12,0.7)'; ctx.textAlign = 'center'; ctx.letterSpacing = '4px';
+  ctx.fillText(num, cx, y+46);
+
+  // Bet text
+  ctx.fillStyle = '#F5C030'; ctx.textAlign = 'center'; ctx.letterSpacing = '-0.5px';
+  let bsz = 90;
+  ctx.font = `900 ${bsz}px "Barlow Condensed",sans-serif`;
+  for (const word of bet.split(' ')) {
+    while (ctx.measureText(word).width > w-44 && bsz > 44) {
+      bsz -= 4; ctx.font = `900 ${bsz}px "Barlow Condensed",sans-serif`;
+    }
+  }
+  const bLH = bsz * 1.06;
+  const bLines = wrapCentered(ctx, bet, cx, y+78+bsz, w-44, bLH);
+  const bBot = y + 78 + bsz + (bLines-1) * bLH;
+
+  // English label
+  if (lbl) {
+    ctx.font = '600 21px "Barlow Condensed",sans-serif';
+    ctx.fillStyle = 'rgba(200,190,160,0.5)'; ctx.textAlign = 'center'; ctx.letterSpacing = '2px';
+    ctx.fillText(lbl, cx, bBot + 34);
+  }
+
+  // Badges
+  const bY = y + h - 100, bH = 66, bGap = 12, bW = (w-50)/2;
+  const b1 = x+24, b2 = x+24+bW+bGap;
+
+  // Cuota
+  ctx.fillStyle = 'rgba(28,31,40,0.95)'; roundRect(ctx,b1,bY,bW,bH,8); ctx.fill();
+  ctx.strokeStyle = 'rgba(212,146,12,0.28)'; ctx.lineWidth = 1; roundRect(ctx,b1,bY,bW,bH,8); ctx.stroke();
+  ctx.font = '600 15px "Barlow Condensed",sans-serif'; ctx.fillStyle = 'rgba(175,155,95,0.65)';
+  ctx.textAlign = 'center'; ctx.letterSpacing = '2px'; ctx.fillText('CUOTA', b1+bW/2, bY+23);
+  ctx.font = '800 34px "Barlow Condensed",sans-serif'; ctx.fillStyle = '#FFFFFF'; ctx.letterSpacing = '0px';
+  ctx.fillText(odds, b1+bW/2, bY+56);
+
+  // Stake
+  ctx.fillStyle = 'rgba(212,146,12,0.14)'; roundRect(ctx,b2,bY,bW,bH,8); ctx.fill();
+  ctx.strokeStyle = 'rgba(212,146,12,0.42)'; ctx.lineWidth = 1; roundRect(ctx,b2,bY,bW,bH,8); ctx.stroke();
+  ctx.font = '600 15px "Barlow Condensed",sans-serif'; ctx.fillStyle = 'rgba(245,192,48,0.72)';
+  ctx.textAlign = 'center'; ctx.letterSpacing = '2px'; ctx.fillText('STAKE', b2+bW/2, bY+23);
+  ctx.font = '800 34px "Barlow Condensed",sans-serif'; ctx.fillStyle = '#F5C030'; ctx.letterSpacing = '0px';
+  ctx.fillText(stake, b2+bW/2, bY+56);
+}
+
 function downloadImage() {
   const canvas = document.getElementById('pickCanvas');
-  const t1 = document.getElementById('team1').value || 'pick';
-  const t2 = document.getElementById('team2').value || '';
-  const link = document.createElement('a');
-  link.download = `NationParley_${t1}vs${t2}.png`.replace(/\s+/g,'_');
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
-
-// ── Canvas helpers ──
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
-function roundRectStroke(ctx, x, y, w, h, r) {
-  roundRect(ctx, x, y, w, h, r);
-  ctx.stroke();
+  const a = document.createElement('a');
+  a.download = `NationParley_${document.getElementById('team1').value||'pick'}.png`.replace(/\s+/g,'_');
+  a.href = canvas.toDataURL('image/png');
+  a.click();
 }
 </script>
 </body>
