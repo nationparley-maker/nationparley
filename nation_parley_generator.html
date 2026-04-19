@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nation Parley — Generador de Picks</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #D4920C;
+    --gold-light: #F5C030;
+    --gold-dark: #8B5E08;
+    --black: #070707;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #e8e0d0;
+    --text-dim: #888070;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── HEADER ── */
+  header {
+    width: 100%;
+    padding: 28px 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    gap: 14px;
+  }
+  .logo-mark {
+    width: 42px; height: 42px;
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+  }
+  .brand span { font-style: italic; font-weight: 400; }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    width: 100%;
+    max-width: 1100px;
+    padding: 40px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  /* ── FORM PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .panel-title {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .field { margin-bottom: 18px; }
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 7px;
+  }
+  input, select, textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+  }
+  select option { background: #1a1a1a; }
+  textarea { resize: vertical; min-height: 80px; font-size: 15px; line-height: 1.5; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Confidence slider */
+  .slider-row { display: flex; align-items: center; gap: 14px; }
+  input[type=range] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold) var(--pct, 70%), var(--border) var(--pct, 70%));
+    border: none;
+    border-radius: 2px;
+    padding: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    border: 2px solid var(--gold-dark);
+    cursor: pointer;
+  }
+  .slider-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold-light);
+    min-width: 44px;
+    text-align: right;
+  }
+
+  /* Generate button */
+  .btn-generate {
+    width: 100%;
+    margin-top: 8px;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-generate:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-generate:active { transform: translateY(0); }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ── PREVIEW PANEL ── */
+  .preview-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .canvas-wrap {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .canvas-placeholder {
+    position: absolute;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+  .canvas-placeholder svg { margin-bottom: 12px; opacity: 0.3; }
+
+  .btn-download {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: none;
+  }
+  .btn-download:hover {
+    background: var(--gold);
+    color: #000;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: none;
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    position: absolute;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Status */
+  .status {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-align: center;
+    min-height: 16px;
+  }
+  .status.ok { color: #4CAF50; }
+  .status.err { color: #e05050; }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Inline SVG logo mark (basketball line art) -->
+  <svg class="logo-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#C8860A"/>
+        <stop offset="50%" stop-color="#F5C030"/>
+        <stop offset="100%" stop-color="#8B5E08"/>
+      </linearGradient>
+    </defs>
+    <circle cx="40" cy="32" r="22" stroke="url(#hg)" stroke-width="1.8" fill="none"/>
+    <path d="M18,32 Q29,26 40,32 Q51,38 62,32" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M40,10 Q35,21 40,32 Q45,43 40,54" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M22,16 Q12,26 14,40 Q15,46 22,52" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M58,16 Q68,26 66,40 Q65,46 58,52" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <!-- hand simplified -->
+    <path d="M34,52 Q32,58 32,64 Q32,70 40,72 Q48,70 48,64 Q48,58 46,52" stroke="url(#hg)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M34,52 Q31,49 28,51 Q24,54 25,58 Q27,62 31,60 Q33,58 34,54" stroke="url(#hg)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <path d="M32,70 Q28,74 30,77 Q33,79 36,76" stroke="url(#hg)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="brand">Nation <span>Parley</span></div>
+</header>
+
+<main>
+  <!-- FORM -->
+  <div class="panel">
+    <div class="panel-title">Nuevo Pick</div>
+
+    <div class="field">
+      <label>Deporte</label>
+      <select id="sport">
+        <option value="⚽ FÚTBOL">⚽ Fútbol</option>
+        <option value="🏀 NBA">🏀 NBA</option>
+        <option value="🏈 NFL">🏈 NFL</option>
+        <option value="⚾ MLB">⚾ MLB</option>
+        <option value="🎾 TENIS">🎾 Tenis</option>
+        <option value="🥊 MMA/UFC">🥊 MMA / UFC</option>
+        <option value="🏆 OTRO">🏆 Otro</option>
+      </select>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Equipo / Jugador A</label>
+        <input id="team1" type="text" placeholder="Ej. Real Madrid"/>
+      </div>
+      <div class="field">
+        <label>Equipo / Jugador B</label>
+        <input id="team2" type="text" placeholder="Ej. Barcelona"/>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Tipo de apuesta</label>
+        <select id="betType">
+          <option>1X2 — Local</option>
+          <option>1X2 — Empate</option>
+          <option>1X2 — Visitante</option>
+          <option>Ambos anotan</option>
+          <option>Over 2.5</option>
+          <option>Under 2.5</option>
+          <option>Hándicap</option>
+          <option>Doble oportunidad</option>
+          <option>Primer gol</option>
+          <option>Personalizado</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cuota</label>
+        <input id="odds" type="text" placeholder="Ej. 1.85"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Análisis breve</label>
+      <textarea id="analysis" placeholder="Ej. Real Madrid llega invicto en casa, Barcelona sin sus titulares clave..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Confianza del pick — <span id="confLabel">75</span>%</label>
+      <div class="slider-row">
+        <input type="range" id="confidence" min="50" max="99" value="75"
+               oninput="updateSlider(this)"/>
+        <span class="slider-val" id="confVal">75%</span>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Liga / Torneo</label>
+        <input id="league" type="text" placeholder="Ej. Champions League"/>
+      </div>
+      <div class="field">
+        <label>Fecha</label>
+        <input id="matchDate" type="text" placeholder="Ej. Hoy 20:00"/>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="btnGenerate" onclick="generateImage()">
+      ✦ Generar imagen
+    </button>
+    <div class="status" id="status"></div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="canvas-placeholder" id="placeholder">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="18" r="12" stroke="#888" stroke-width="1.5" fill="none"/>
+          <path d="M12,18 Q18,15 24,18 Q30,21 36,18" stroke="#888" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path d="M24,6 Q21,12 24,18 Q27,24 24,30" stroke="#888" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div>La imagen aparecerá aquí</div>
+      </div>
+      <div class="spinner" id="spinner"></div>
+      <canvas id="pickCanvas" style="display:none"></canvas>
+    </div>
+    <button class="btn-download" id="btnDownload" onclick="downloadImage()">
+      ↓ Descargar imagen
+    </button>
+  </div>
+</main>
+
+<script>
+// ── Slider update ──
+function updateSlider(el) {
+  const v = el.value;
+  document.getElementById('confLabel').textContent = v;
+  document.getElementById('confVal').textContent = v + '%';
+  const pct = ((v - 50) / 49 * 100).toFixed(1);
+  el.style.setProperty('--pct', pct + '%');
+}
+updateSlider(document.getElementById('confidence'));
+
+// ── Sport icon map ──
+const SPORT_ICONS = {
+  '⚽ FÚTBOL': '⚽', '🏀 NBA': '🏀', '🏈 NFL': '🏈',
+  '⚾ MLB': '⚾', '🎾 TENIS': '🎾', '🥊 MMA/UFC': '🥊', '🏆 OTRO': '🏆'
+};
+
+// ── Confidence color ──
+function confColor(v) {
+  if (v >= 85) return '#4CAF50';
+  if (v >= 70) return '#F5C030';
+  return '#E07030';
+}
+
+// ── Confidence label ──
+function confLabel(v) {
+  if (v >= 85) return 'ALTA CONFIANZA';
+  if (v >= 70) return 'CONFIANZA MEDIA';
+  return 'PICK DE RIESGO';
+}
+
+// ── Word wrap helper ──
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  let lines = [];
+  for (let w of words) {
+    const test = line + w + ' ';
+    if (ctx.measureText(test).width > maxWidth && line !== '') {
+      lines.push(line.trim());
+      line = w + ' ';
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line.trim());
+  lines.forEach((l, i) => ctx.fillText(l, x, y + i * lineHeight));
+  return lines.length;
+}
+
+// ── Draw basketball SVG path on canvas ──
+function drawBball(ctx, cx, cy, r, goldGrad) {
+  ctx.strokeStyle = goldGrad;
+  ctx.lineWidth = 1.6;
+  ctx.lineCap = 'round';
+
+  // circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // horizontal seam
+  ctx.beginPath();
+  ctx.moveTo(cx - r, cy);
+  ctx.bezierCurveTo(cx - r * 0.4, cy - r * 0.3, cx + r * 0.4, cy + r * 0.3, cx + r, cy);
+  ctx.stroke();
+
+  // vertical seam
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - r);
+  ctx.bezierCurveTo(cx - r * 0.3, cy - r * 0.4, cx + r * 0.3, cy + r * 0.4, cx, cy + r);
+  ctx.stroke();
+
+  // left arc
+  ctx.beginPath();
+  ctx.moveTo(cx - r * 0.6, cy - r * 0.8);
+  ctx.bezierCurveTo(cx - r * 1.1, cy - r * 0.1, cx - r * 0.9, cy + r * 0.5, cx - r * 0.6, cy + r * 0.8);
+  ctx.stroke();
+
+  // right arc
+  ctx.beginPath();
+  ctx.moveTo(cx + r * 0.6, cy - r * 0.8);
+  ctx.bezierCurveTo(cx + r * 1.1, cy - r * 0.1, cx + r * 0.9, cy + r * 0.5, cx + r * 0.6, cy + r * 0.8);
+  ctx.stroke();
+}
+
+// ── MAIN GENERATE ──
+async function generateImage() {
+  const btn = document.getElementById('btnGenerate');
+  const spinner = document.getElementById('spinner');
+  const statusEl = document.getElementById('status');
+  const canvas = document.getElementById('pickCanvas');
+  const placeholder = document.getElementById('placeholder');
+
+  const sport    = document.getElementById('sport').value;
+  const team1    = document.getElementById('team1').value || 'Equipo A';
+  const team2    = document.getElementById('team2').value || 'Equipo B';
+  const betType  = document.getElementById('betType').value;
+  const odds     = document.getElementById('odds').value || '—';
+  const analysis = document.getElementById('analysis').value || '';
+  const conf     = parseInt(document.getElementById('confidence').value);
+  const league   = document.getElementById('league').value || '';
+  const date     = document.getElementById('matchDate').value || '';
+
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  placeholder.style.display = 'none';
+  canvas.style.display = 'none';
+  statusEl.textContent = 'Generando análisis con IA...';
+  statusEl.className = 'status';
+
+  // ── Ask Claude for a sharp 2-line analysis ──
+  let aiAnalysis = analysis;
+  try {
+    const prompt = `Eres un tipster profesional de apuestas deportivas. 
+Genera un análisis conciso y contundente de máximo 2 líneas (máx 160 caracteres total) para este pick:
+- Partido: ${team1} vs ${team2}
+- Deporte: ${sport}
+- Apuesta: ${betType}
+- Análisis base: ${analysis || 'sin análisis'}
+Responde SOLO el análisis, sin comillas, sin emojis, sin explicaciones extra.`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    if (data.content && data.content[0]) {
+      aiAnalysis = data.content[0].text.trim().slice(0, 180);
+    }
+    statusEl.textContent = 'Análisis generado ✦ Renderizando...';
+    statusEl.className = 'status ok';
+  } catch(e) {
+    statusEl.textContent = 'IA no disponible — usando análisis manual';
+    statusEl.className = 'status err';
+  }
+
+  // ── RENDER CANVAS ──
+  const SIZE = 1080;
+  canvas.width = SIZE;
+  canvas.height = SIZE;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#070707';
+  ctx.fillRect(0, 0, SIZE, SIZE);
+
+  // Subtle radial glow
+  const bgGlow = ctx.createRadialGradient(SIZE/2, SIZE*0.38, 0, SIZE/2, SIZE*0.38, SIZE*0.45);
+  bgGlow.addColorStop(0, 'rgba(180,120,10,0.10)');
+  bgGlow.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bgGlow;
+  ctx.fillRect(0, 0, SIZE, SIZE);
+
+  // Gold gradient helper
+  const mkGold = (x1,y1,x2,y2) => {
+    const g = ctx.createLinearGradient(x1,y1,x2,y2);
+    g.addColorStop(0,   '#C8860A');
+    g.addColorStop(0.4, '#F5C030');
+    g.addColorStop(0.7, '#D4920C');
+    g.addColorStop(1,   '#8B5E08');
+    return g;
+  };
+
+  // ── TOP HEADER BAR ──
+  const hdr = ctx.createLinearGradient(0, 0, SIZE, 0);
+  hdr.addColorStop(0,   '#8B5E08');
+  hdr.addColorStop(0.5, '#D4920C');
+  hdr.addColorStop(1,   '#8B5E08');
+  ctx.fillStyle = hdr;
+  ctx.fillRect(0, 0, SIZE, 90);
+
+  // Brand name in header
+  ctx.fillStyle = '#070707';
+  ctx.font = 'bold 38px Georgia, serif';
+  ctx.letterSpacing = '4px';
+  ctx.textAlign = 'center';
+  ctx.fillText('NATION PARLEY', SIZE/2, 58);
+
+  // Sport label pill — top right
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  roundRect(ctx, SIZE - 200, 18, 175, 54, 8);
+  ctx.fill();
+  ctx.fillStyle = '#F5C030';
+  ctx.font = 'bold 22px "Barlow Condensed", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(SPORT_ICONS[sport] + '  ' + sport.replace(/^.\s/, ''), SIZE - 112, 52);
+
+  // ── MATCH SECTION ──
+  const matchY = 130;
+
+  // League + date line
+  if (league || date) {
+    ctx.fillStyle = 'rgba(245,192,48,0.55)';
+    ctx.font = '600 22px "Barlow Condensed", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '3px';
+    const meta = [league, date].filter(Boolean).join('  •  ').toUpperCase();
+    ctx.fillText(meta, SIZE/2, matchY + 10);
+  }
+
+  // Divider line
+  ctx.strokeStyle = mkGold(0, 0, SIZE, 0);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(80, matchY + 28); ctx.lineTo(SIZE - 80, matchY + 28);
+  ctx.stroke();
+
+  // Teams
+  ctx.font = 'bold 88px "Barlow Condensed", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.letterSpacing = '0px';
+
+  // Team 1
+  ctx.textAlign = 'right';
+  ctx.fillText(team1.toUpperCase(), SIZE/2 - 60, matchY + 120);
+
+  // VS
+  ctx.font = '600 34px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = mkGold(SIZE/2 - 30, 0, SIZE/2 + 30, 0);
+  ctx.textAlign = 'center';
+  ctx.fillText('VS', SIZE/2, matchY + 102);
+
+  // Team 2
+  ctx.font = 'bold 88px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'left';
+  ctx.fillText(team2.toUpperCase(), SIZE/2 + 60, matchY + 120);
+
+  // ── PICK BOX ──
+  const pickY = matchY + 160;
+
+  ctx.strokeStyle = mkGold(0, pickY, SIZE, pickY + 100);
+  ctx.lineWidth = 1.5;
+  roundRectStroke(ctx, 60, pickY, SIZE - 120, 110, 10);
+
+  ctx.fillStyle = 'rgba(212,146,12,0.06)';
+  roundRect(ctx, 60, pickY, SIZE - 120, 110, 10);
+  ctx.fill();
+
+  // Pick label
+  ctx.font = '600 18px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = 'rgba(245,192,48,0.6)';
+  ctx.textAlign = 'left';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('PICK', 100, pickY + 32);
+
+  // Bet type
+  ctx.font = 'bold 46px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = mkGold(100, 0, 700, 0);
+  ctx.letterSpacing = '1px';
+  ctx.fillText(betType.toUpperCase(), 100, pickY + 82);
+
+  // Odds
+  ctx.font = 'bold 62px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'right';
+  ctx.letterSpacing = '0px';
+  ctx.fillText('@  ' + odds, SIZE - 100, pickY + 86);
+
+  // ── CONFIDENCE BAR ──
+  const barY = pickY + 140;
+  ctx.fillStyle = '#1a1a1a';
+  roundRect(ctx, 60, barY, SIZE - 120, 52, 8);
+  ctx.fill();
+
+  const barFill = ctx.createLinearGradient(60, 0, 60 + (SIZE - 120) * conf / 100, 0);
+  barFill.addColorStop(0,   confColor(conf) + 'AA');
+  barFill.addColorStop(1,   confColor(conf));
+  ctx.fillStyle = barFill;
+  roundRect(ctx, 60, barY, (SIZE - 120) * conf / 100, 52, 8);
+  ctx.fill();
+
+  ctx.font = 'bold 22px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'left';
+  ctx.letterSpacing = '2px';
+  ctx.fillText(confLabel(conf) + '  ' + conf + '%', 84, barY + 33);
+
+  // ── ANALYSIS ──
+  const anaY = barY + 80;
+
+  ctx.strokeStyle = 'rgba(212,146,12,0.2)';
+  ctx.lineWidth = 1;
+  roundRectStroke(ctx, 60, anaY, SIZE - 120, 180, 10);
+  ctx.fillStyle = 'rgba(255,255,255,0.02)';
+  roundRect(ctx, 60, anaY, SIZE - 120, 180, 10);
+  ctx.fill();
+
+  ctx.font = '600 17px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = 'rgba(245,192,48,0.55)';
+  ctx.textAlign = 'left';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('ANÁLISIS', 100, anaY + 32);
+
+  ctx.font = '400 28px Georgia, serif';
+  ctx.fillStyle = 'rgba(232,224,208,0.88)';
+  ctx.letterSpacing = '0px';
+  wrapText(ctx, aiAnalysis, 100, anaY + 68, SIZE - 220, 38);
+
+  // ── BASKETBALL WATERMARK (top-left area, faint) ──
+  ctx.save();
+  ctx.globalAlpha = 0.07;
+  const wmGold = ctx.createLinearGradient(0,0,200,200);
+  wmGold.addColorStop(0,'#F5C030'); wmGold.addColorStop(1,'#8B5E08');
+  drawBball(ctx, 100, 700, 70, wmGold);
+  ctx.restore();
+
+  // ── FOOTER ──
+  const footY = SIZE - 90;
+  ctx.fillStyle = 'rgba(212,146,12,0.08)';
+  ctx.fillRect(0, footY, SIZE, 90);
+
+  ctx.strokeStyle = mkGold(0, footY, SIZE, footY);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, footY); ctx.lineTo(SIZE, footY);
+  ctx.stroke();
+
+  // Basketball icon in footer
+  ctx.save();
+  ctx.globalAlpha = 0.85;
+  const fGold = mkGold(SIZE/2 - 28, 0, SIZE/2 + 28, 0);
+  drawBball(ctx, SIZE/2 - 180, footY + 44, 22, fGold);
+  ctx.restore();
+
+  ctx.font = '600 24px Georgia, serif';
+  ctx.fillStyle = mkGold(SIZE/2 - 100, 0, SIZE/2 + 100, 0);
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('Nation Parley', SIZE/2 - 120, footY + 52);
+
+  ctx.font = '400 18px "Barlow Condensed", sans-serif';
+  ctx.fillStyle = 'rgba(212,146,12,0.4)';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('JUEGA CON INTELIGENCIA', SIZE/2 + 140, footY + 52);
+
+  // ── SHOW ──
+  spinner.style.display = 'none';
+  canvas.style.display = 'block';
+  document.getElementById('btnDownload').style.display = 'block';
+  btn.disabled = false;
+  statusEl.textContent = '✦ Imagen lista para descargar';
+  statusEl.className = 'status ok';
+}
+
+// ── Download ──
+function downloadImage() {
+  const canvas = document.getElementById('pickCanvas');
+  const t1 = document.getElementById('team1').value || 'pick';
+  const t2 = document.getElementById('team2').value || '';
+  const link = document.createElement('a');
+  link.download = `NationParley_${t1}vs${t2}.png`.replace(/\s+/g,'_');
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ── Canvas helpers ──
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+function roundRectStroke(ctx, x, y, w, h, r) {
+  roundRect(ctx, x, y, w, h, r);
+  ctx.stroke();
+}
+</script>
+</body>
+</html>

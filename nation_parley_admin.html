@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nation Parley — Panel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #D4920C;
+  --gold-light: #F5C030;
+  --gold-dark: #8B5E08;
+  --black: #060606;
+  --s1: #0f0f0f;
+  --s2: #161616;
+  --s3: #1e1e1e;
+  --border: #2a2a2a;
+  --text: #e8e0d0;
+  --dim: #7a7060;
+  --green: #3dba6e;
+  --red: #e05050;
+  --yellow: #F5C030;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 220px; min-height: 100vh;
+  background: var(--s1);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 0 0 24px;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-logo .brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 1px; line-height: 1.2;
+}
+.sidebar-logo .sub {
+  font-size: 10px; letter-spacing: 3px;
+  color: var(--dim); margin-top: 2px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 20px; cursor: pointer;
+  font-size: 13px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--dim);
+  border-left: 2px solid transparent;
+  transition: all 0.18s;
+}
+.nav-item:hover { color: var(--text); background: var(--s2); }
+.nav-item.active { color: var(--gold-light); border-left-color: var(--gold); background: var(--s2); }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+.sidebar-footer {
+  margin-top: auto; padding: 16px 20px 0;
+  border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--dim); letter-spacing: 2px;
+}
+
+/* ── MAIN ── */
+.main { margin-left: 220px; flex: 1; padding: 32px 28px; min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.page-title {
+  font-size: 28px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text);
+}
+.page-title span { color: var(--gold); }
+.btn {
+  padding: 10px 22px; border-radius: 6px; cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; border: none; transition: all 0.18s;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  color: #000;
+}
+.btn-gold:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-outline {
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold);
+}
+.btn-outline:hover { background: var(--gold); color: #000; }
+.btn-sm {
+  padding: 6px 14px; font-size: 11px; letter-spacing: 2px; border-radius: 4px;
+}
+.btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-success { background: transparent; border: 1px solid var(--green); color: var(--green); }
+.btn-success:hover { background: var(--green); color: #fff; }
+
+/* ── STATS CARDS ── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 22px;
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+}
+.stat-label {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 10px;
+}
+.stat-value {
+  font-size: 42px; font-weight: 800; color: var(--gold-light);
+  line-height: 1;
+}
+.stat-sub { font-size: 12px; color: var(--dim); margin-top: 6px; letter-spacing: 1px; }
+.stat-icon {
+  position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  font-size: 36px; opacity: 0.08;
+}
+
+/* ── SECTION ── */
+.section { margin-bottom: 28px; }
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold);
+}
+
+/* ── TABLE ── */
+.table-wrap {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--s3); border-bottom: 1px solid var(--border); }
+th {
+  padding: 13px 16px; text-align: left;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim); font-weight: 600;
+}
+tbody tr {
+  border-bottom: 1px solid rgba(42,42,42,0.6);
+  transition: background 0.15s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(212,146,12,0.04); }
+td { padding: 13px 16px; font-size: 15px; }
+
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+}
+.badge-active { background: rgba(61,186,110,0.15); color: var(--green); border: 1px solid rgba(61,186,110,0.3); }
+.badge-expired { background: rgba(224,80,80,0.12); color: var(--red); border: 1px solid rgba(224,80,80,0.25); }
+.badge-pending { background: rgba(245,192,48,0.12); color: var(--yellow); border: 1px solid rgba(245,192,48,0.25); }
+.badge-vip { background: rgba(212,146,12,0.15); color: var(--gold-light); border: 1px solid rgba(212,146,12,0.3); }
+.badge-free { background: rgba(120,120,120,0.12); color: var(--dim); border: 1px solid rgba(120,120,120,0.2); }
+
+.days-left { font-size: 13px; }
+.days-left.ok { color: var(--green); }
+.days-left.warn { color: var(--yellow); }
+.days-left.exp { color: var(--red); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px; width: 100%; max-width: 480px;
+  transform: translateY(16px); transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-title {
+  font-size: 18px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold-light);
+  margin-bottom: 24px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%; background: var(--s3); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 16px;
+  padding: 10px 13px; outline: none; transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { border-color: var(--gold); }
+.field select option { background: #1a1a1a; }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 8px; justify-content: flex-end; }
+
+/* ── SEARCH ── */
+.search-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; align-items: center;
+}
+.search-bar input {
+  flex: 1; background: var(--s2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+  padding: 9px 14px; outline: none; transition: border-color 0.2s;
+}
+.search-bar input:focus { border-color: var(--gold); }
+.filter-btn {
+  padding: 9px 16px; background: var(--s2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--dim); cursor: pointer;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px;
+  letter-spacing: 2px; text-transform: uppercase; transition: all 0.15s;
+}
+.filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── ALERTS ── */
+.alert-box {
+  background: rgba(224,80,80,0.08); border: 1px solid rgba(224,80,80,0.2);
+  border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;
+  display: none;
+}
+.alert-box.show { display: block; }
+.alert-title { font-size: 11px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 6px; }
+.alert-list { font-size: 14px; color: rgba(232,224,208,0.7); }
+.alert-list li { margin-bottom: 3px; list-style: none; padding-left: 14px; position: relative; }
+.alert-list li::before { content: '!'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+
+/* ── EMPTY STATE ── */
+.empty {
+  text-align: center; padding: 48px 20px; color: var(--dim);
+  font-size: 14px; letter-spacing: 2px;
+}
+.empty-icon { font-size: 40px; opacity: 0.3; margin-bottom: 12px; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--s3); border: 1px solid var(--gold);
+  border-radius: 8px; padding: 14px 20px;
+  font-size: 14px; color: var(--gold-light); letter-spacing: 1px;
+  z-index: 9999; transform: translateY(80px); opacity: 0;
+  transition: all 0.3s; pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 700px) {
+  .sidebar { width: 60px; }
+  .sidebar-logo .brand, .sidebar-logo .sub, .nav-item span { display: none; }
+  .nav-item { justify-content: center; padding: 14px; }
+  .main { margin-left: 60px; padding: 20px 14px; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  th:nth-child(4), td:nth-child(4),
+  th:nth-child(5), td:nth-child(5) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">Nation Parley</div>
+      <div class="sub">Panel Admin</div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('dashboard')">
+        <span class="nav-icon">📊</span><span>Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="showSection('members')">
+        <span class="nav-icon">👥</span><span>Miembros</span>
+      </div>
+      <div class="nav-item" onclick="showSection('payments')">
+        <span class="nav-icon">💰</span><span>Pagos</span>
+      </div>
+      <div class="nav-item" onclick="showSection('alerts')">
+        <span class="nav-icon">🔔</span><span>Alertas</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">v1.0 · 2026</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <section id="sec-dashboard">
+      <div class="topbar">
+        <div class="page-title">Dashboard <span>·</span> Resumen</div>
+        <button class="btn btn-gold" onclick="openModal()">+ Nuevo miembro</button>
+      </div>
+
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- Expiring soon alert -->
+      <div class="alert-box" id="expiringAlert">
+        <div class="alert-title">⚠ Vencen en los próximos 5 días</div>
+        <ul class="alert-list" id="expiringList"></ul>
+      </div>
+
+      <!-- Recent members -->
+      <div class="section">
+        <div class="section-head">
+          <div class="section-title">Últimos miembros registrados</div>
+          <button class="btn btn-outline btn-sm" onclick="showSection('members')">Ver todos</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Usuario</th><th>Plan</th><th>Estado</th><th>Vence</th><th>Días</th>
+            </tr></thead>
+            <tbody id="recentTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ MEMBERS ══ -->
+    <section id="sec-members" style="display:none">
+      <div class="topbar">
+        <div class="page-title">Miembros <span>VIP</span></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()">↓ Exportar CSV</button>
+          <button class="btn btn-gold" onclick="openModal()">+ Nuevo</button>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre o usuario..." oninput="renderMembers()"/>
+        <button class="filter-btn active" id="fAll" onclick="setFilter('all')">Todos</button>
+        <button class="filter-btn" id="fActive" onclick="setFilter('active')">Activos</button>
+        <button class="filter-btn" id="fExpired" onclick="setFilter('expired')">Vencidos</button>
+        <button class="filter-btn" id="fPending" onclick="setFilter('pending')">Pendientes</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Nombre</th><th>Telegram</th><th>Plan</th>
+            <th>Pago</th><th>Estado</th><th>Vence</th><th>Días</th><th>Acciones</th>
+          </tr></thead>
+          <tbody id="membersTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ PAYMENTS ══ -->
+    <section id="sec-payments" style="display:none">
+      <div class="topbar">
+        <div class="page-title">Registro de <span>Pagos</span></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Fecha</th><th>Miembro</th><th>Plan</th><th>Monto</th><th>Método</th><th>Estado</th>
+          </tr></thead>
+          <tbody id="paymentsTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ ALERTS ══ -->
+    <section id="sec-alerts" style="display:none">
+      <div class="topbar">
+        <div class="page-title">Centro de <span>Alertas</span></div>
+      </div>
+      <div id="alertsContent"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══ MODAL: Nuevo/Editar Miembro ══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Nuevo Miembro</div>
+    <div class="modal-row">
+      <div class="field">
+        <label>Nombre completo</label>
+        <input id="mName" type="text" placeholder="Juan Pérez"/>
+      </div>
+      <div class="field">
+        <label>Usuario Telegram</label>
+        <input id="mTelegram" type="text" placeholder="@juanperez"/>
+      </div>
+    </div>
+    <div class="modal-row">
+      <div class="field">
+        <label>Plan</label>
+        <select id="mPlan">
+          <option value="VIP Mensual">VIP Mensual</option>
+          <option value="VIP Trimestral">VIP Trimestral</option>
+          <option value="VIP Anual">VIP Anual</option>
+          <option value="Free">Free</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Método de pago</label>
+        <select id="mPayment">
+          <option>Nequi</option>
+          <option>Bancolombia</option>
+          <option>PayPal</option>
+          <option>Efectivo</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-row">
+      <div class="field">
+        <label>Fecha de inicio</label>
+        <input id="mStart" type="date"/>
+      </div>
+      <div class="field">
+        <label>Fecha de vencimiento</label>
+        <input id="mEnd" type="date"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Estado</label>
+      <select id="mStatus">
+        <option value="active">Activo</option>
+        <option value="pending">Pendiente pago</option>
+        <option value="expired">Vencido</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <div class="field">
+        <label>Monto cobrado (COP)</label>
+        <input id="mAmount" type="text" placeholder="50000"/>
+      </div>
+      <div class="field">
+        <label>Teléfono / contacto</label>
+        <input id="mPhone" type="text" placeholder="+57 300..."/>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-gold btn-sm" onclick="saveMember()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ DATA ══
+let members = JSON.parse(localStorage.getItem('np_members') || '[]');
+let editingId = null;
+let currentFilter = 'all';
+
+// Pre-load demo data if empty
+if (members.length === 0) {
+  const today = new Date();
+  const fmt = d => d.toISOString().split('T')[0];
+  const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+  members = [
+    { id:1, name:'Carlos Mejía', telegram:'@carlosmejia', plan:'VIP Mensual', payment:'Nequi', start: fmt(add(today,-20)), end: fmt(add(today,10)), status:'active', amount:'50000', phone:'+57 312 000 0001' },
+    { id:2, name:'Ana Ríos', telegram:'@anarios', plan:'VIP Mensual', payment:'Bancolombia', start: fmt(add(today,-28)), end: fmt(add(today,3)), status:'active', amount:'50000', phone:'+57 300 000 0002' },
+    { id:3, name:'Luis Torres', telegram:'@luistorres', plan:'VIP Trimestral', payment:'PayPal', start: fmt(add(today,-15)), end: fmt(add(today,75)), status:'active', amount:'130000', phone:'' },
+    { id:4, name:'María López', telegram:'@marialopez', plan:'VIP Mensual', payment:'Nequi', start: fmt(add(today,-35)), end: fmt(add(today,-5)), status:'expired', amount:'50000', phone:'+57 301 000 0004' },
+    { id:5, name:'Pedro Gómez', telegram:'@pedrogomez', plan:'Free', payment:'—', start: fmt(today), end: fmt(add(today,999)), status:'active', amount:'0', phone:'' },
+    { id:6, name:'Sofía Vargas', telegram:'@sofiavargas', plan:'VIP Mensual', payment:'Bancolombia', start: fmt(today), end: fmt(add(today,30)), status:'pending', amount:'50000', phone:'+57 315 000 0006' },
+  ];
+  save();
+}
+
+function save() {
+  localStorage.setItem('np_members', JSON.stringify(members));
+}
+
+// ══ UTILITIES ══
+function daysLeft(endDate) {
+  const diff = Math.ceil((new Date(endDate) - new Date()) / 86400000);
+  return diff;
+}
+
+function daysClass(d, status) {
+  if (status === 'pending') return 'warn';
+  if (d < 0 || status === 'expired') return 'exp';
+  if (d <= 5) return 'warn';
+  return 'ok';
+}
+
+function daysText(d, status) {
+  if (status === 'pending') return 'Pendiente';
+  if (d < 0) return 'Vencido';
+  if (d === 0) return 'Hoy vence';
+  return d + ' días';
+}
+
+function statusBadge(s) {
+  if (s === 'active')  return '<span class="badge badge-active">Activo</span>';
+  if (s === 'expired') return '<span class="badge badge-expired">Vencido</span>';
+  if (s === 'pending') return '<span class="badge badge-pending">Pendiente</span>';
+  return '';
+}
+
+function planBadge(p) {
+  if (p === 'Free') return '<span class="badge badge-free">Free</span>';
+  return '<span class="badge badge-vip">' + p + '</span>';
+}
+
+function fmt(d) {
+  if (!d) return '—';
+  const [y,m,dd] = d.split('-');
+  return dd+'/'+m+'/'+y;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ══ NAVIGATION ══
+function showSection(id) {
+  ['dashboard','members','payments','alerts'].forEach(s => {
+    document.getElementById('sec-'+s).style.display = s===id ? '' : 'none';
+    document.querySelectorAll('.nav-item').forEach((el,i) => {
+      const map = ['dashboard','members','payments','alerts'];
+      el.classList.toggle('active', map[i]===id);
+    });
+  });
+  if (id==='dashboard') renderDashboard();
+  if (id==='members')   renderMembers();
+  if (id==='payments')  renderPayments();
+  if (id==='alerts')    renderAlerts();
+}
+
+// ══ DASHBOARD ══
+function renderDashboard() {
+  const total    = members.length;
+  const active   = members.filter(m=>m.status==='active' && m.plan!=='Free').length;
+  const expired  = members.filter(m=>m.status==='expired').length;
+  const pending  = members.filter(m=>m.status==='pending').length;
+  const revenue  = members.reduce((s,m)=>s+parseInt(m.amount||0),0);
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total miembros</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-sub">registrados</div>
+      <div class="stat-icon">👥</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">VIP activos</div>
+      <div class="stat-value" style="color:var(--green)">${active}</div>
+      <div class="stat-sub">en el canal</div>
+      <div class="stat-icon">✅</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Vencidos / Pendientes</div>
+      <div class="stat-value" style="color:var(--red)">${expired + pending}</div>
+      <div class="stat-sub">${expired} venc. · ${pending} pend.</div>
+      <div class="stat-icon">⚠️</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Ingresos registrados</div>
+      <div class="stat-value" style="font-size:28px;padding-top:6px">$${revenue.toLocaleString('es-CO')}</div>
+      <div class="stat-sub">COP total</div>
+      <div class="stat-icon">💰</div>
+    </div>
+  `;
+
+  // Expiring soon
+  const expiring = members.filter(m => {
+    const d = daysLeft(m.end);
+    return m.status==='active' && d>=0 && d<=5;
+  });
+  const alertBox = document.getElementById('expiringAlert');
+  const alertList = document.getElementById('expiringList');
+  if (expiring.length > 0) {
+    alertBox.classList.add('show');
+    alertList.innerHTML = expiring.map(m =>
+      `<li>${m.name} (${m.telegram}) — vence en <strong>${daysLeft(m.end)} día(s)</strong> · ${m.phone ? m.phone : 'sin teléfono'}</li>`
+    ).join('');
+  } else {
+    alertBox.classList.remove('show');
+  }
+
+  // Recent 5
+  const recent = [...members].reverse().slice(0,5);
+  document.getElementById('recentTbody').innerHTML = recent.length ? recent.map(m => {
+    const d = daysLeft(m.end);
+    return `<tr>
+      <td><strong>${m.name}</strong><br><span style="color:var(--dim);font-size:12px">${m.telegram}</span></td>
+      <td>${planBadge(m.plan)}</td>
+      <td>${statusBadge(m.status)}</td>
+      <td style="color:var(--dim);font-size:13px">${fmt(m.end)}</td>
+      <td><span class="days-left ${daysClass(d,m.status)}">${daysText(d,m.status)}</span></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="5"><div class="empty"><div class="empty-icon">📋</div>Sin miembros aún</div></td></tr>`;
+}
+
+// ══ MEMBERS TABLE ══
+function renderMembers() {
+  const q = (document.getElementById('searchInput')?.value||'').toLowerCase();
+  let list = members.filter(m => {
+    const match = m.name.toLowerCase().includes(q) || m.telegram.toLowerCase().includes(q);
+    if (!match) return false;
+    if (currentFilter==='active')  return m.status==='active';
+    if (currentFilter==='expired') return m.status==='expired';
+    if (currentFilter==='pending') return m.status==='pending';
+    return true;
+  });
+
+  document.getElementById('membersTbody').innerHTML = list.length ? list.map((m,i) => {
+    const d = daysLeft(m.end);
+    return `<tr>
+      <td style="color:var(--dim)">${i+1}</td>
+      <td><strong>${m.name}</strong>${m.phone?`<br><span style="color:var(--dim);font-size:12px">${m.phone}</span>`:''}</td>
+      <td style="color:var(--gold)">${m.telegram}</td>
+      <td>${planBadge(m.plan)}</td>
+      <td style="font-size:13px;color:var(--dim)">${m.payment}</td>
+      <td>${statusBadge(m.status)}</td>
+      <td style="color:var(--dim);font-size:13px">${fmt(m.end)}</td>
+      <td><span class="days-left ${daysClass(d,m.status)}">${daysText(d,m.status)}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="editMember(${m.id})">✏</button>
+        ${m.status==='expired'||m.status==='pending'?`<button class="btn btn-success btn-sm" onclick="renewMember(${m.id})">↺</button>`:''}
+        <button class="btn btn-danger btn-sm" onclick="deleteMember(${m.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="9"><div class="empty"><div class="empty-icon">🔍</div>Sin resultados</div></td></tr>`;
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  ['All','Active','Expired','Pending'].forEach(x =>
+    document.getElementById('f'+x)?.classList.toggle('active', f===x.toLowerCase())
+  );
+  renderMembers();
+}
+
+// ══ PAYMENTS ══
+function renderPayments() {
+  const paid = members.filter(m=>parseInt(m.amount||0)>0);
+  document.getElementById('paymentsTbody').innerHTML = paid.length ? paid.map(m => `
+    <tr>
+      <td style="color:var(--dim);font-size:13px">${fmt(m.start)}</td>
+      <td><strong>${m.name}</strong><br><span style="color:var(--gold);font-size:12px">${m.telegram}</span></td>
+      <td>${planBadge(m.plan)}</td>
+      <td style="color:var(--green);font-weight:700">$${parseInt(m.amount).toLocaleString('es-CO')}</td>
+      <td style="font-size:13px;color:var(--dim)">${m.payment}</td>
+      <td>${statusBadge(m.status)}</td>
+    </tr>`).join('')
+  : `<tr><td colspan="6"><div class="empty"><div class="empty-icon">💳</div>Sin pagos registrados</div></td></tr>`;
+}
+
+// ══ ALERTS ══
+function renderAlerts() {
+  const exp = members.filter(m=>m.status==='expired');
+  const pend = members.filter(m=>m.status==='pending');
+  const soon = members.filter(m=>{ const d=daysLeft(m.end); return m.status==='active'&&d>=0&&d<=5; });
+
+  let html = '';
+  if (soon.length) {
+    html += `<div class="alert-box show" style="margin-bottom:16px">
+      <div class="alert-title">⏰ Vencen pronto (≤5 días)</div>
+      <ul class="alert-list">${soon.map(m=>`<li>${m.name} · ${m.telegram} · ${daysLeft(m.end)} día(s) · ${m.phone||'sin contacto'}</li>`).join('')}</ul>
+    </div>`;
+  }
+  if (pend.length) {
+    html += `<div class="alert-box show" style="border-color:rgba(245,192,48,0.3);background:rgba(245,192,48,0.05);margin-bottom:16px">
+      <div class="alert-title" style="color:var(--yellow)">💳 Pagos pendientes</div>
+      <ul class="alert-list" style="color:rgba(232,224,208,0.7)">${pend.map(m=>`<li>${m.name} · ${m.telegram} · ${m.plan} · ${m.phone||'sin contacto'}</li>`).join('')}</ul>
+    </div>`;
+  }
+  if (exp.length) {
+    html += `<div class="alert-box show">
+      <div class="alert-title">❌ Vencidos (remover del canal)</div>
+      <ul class="alert-list">${exp.map(m=>`<li>${m.name} · ${m.telegram} · venció ${fmt(m.end)}</li>`).join('')}</ul>
+    </div>`;
+  }
+  if (!html) html = `<div class="empty"><div class="empty-icon">✅</div>Todo en orden, sin alertas activas</div>`;
+  document.getElementById('alertsContent').innerHTML = html;
+}
+
+// ══ MODAL ══
+function openModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'Nuevo Miembro';
+  document.getElementById('mName').value = '';
+  document.getElementById('mTelegram').value = '';
+  document.getElementById('mPlan').value = 'VIP Mensual';
+  document.getElementById('mPayment').value = 'Nequi';
+  document.getElementById('mStatus').value = 'active';
+  document.getElementById('mAmount').value = '';
+  document.getElementById('mPhone').value = '';
+  const today = new Date().toISOString().split('T')[0];
+  const end = new Date(); end.setDate(end.getDate()+30);
+  document.getElementById('mStart').value = today;
+  document.getElementById('mEnd').value = end.toISOString().split('T')[0];
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function editMember(id) {
+  const m = members.find(x=>x.id===id);
+  if (!m) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'Editar Miembro';
+  document.getElementById('mName').value = m.name;
+  document.getElementById('mTelegram').value = m.telegram;
+  document.getElementById('mPlan').value = m.plan;
+  document.getElementById('mPayment').value = m.payment;
+  document.getElementById('mStatus').value = m.status;
+  document.getElementById('mAmount').value = m.amount;
+  document.getElementById('mPhone').value = m.phone||'';
+  document.getElementById('mStart').value = m.start;
+  document.getElementById('mEnd').value = m.end;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function closeModalOutside(e) {
+  if (e.target===document.getElementById('modalOverlay')) closeModal();
+}
+
+function saveMember() {
+  const name = document.getElementById('mName').value.trim();
+  const telegram = document.getElementById('mTelegram').value.trim();
+  if (!name || !telegram) { showToast('⚠ Nombre y Telegram son obligatorios'); return; }
+
+  const data = {
+    name, telegram,
+    plan:     document.getElementById('mPlan').value,
+    payment:  document.getElementById('mPayment').value,
+    status:   document.getElementById('mStatus').value,
+    amount:   document.getElementById('mAmount').value||'0',
+    phone:    document.getElementById('mPhone').value,
+    start:    document.getElementById('mStart').value,
+    end:      document.getElementById('mEnd').value,
+  };
+
+  if (editingId) {
+    const idx = members.findIndex(x=>x.id===editingId);
+    members[idx] = { ...members[idx], ...data };
+    showToast('✦ Miembro actualizado');
+  } else {
+    const newId = members.length ? Math.max(...members.map(x=>x.id))+1 : 1;
+    members.push({ id: newId, ...data });
+    showToast('✦ Miembro agregado');
+  }
+  save();
+  closeModal();
+  renderDashboard();
+  renderMembers();
+}
+
+function renewMember(id) {
+  const m = members.find(x=>x.id===id);
+  if (!m) return;
+  const days = m.plan.includes('Trimestral') ? 90 : m.plan.includes('Anual') ? 365 : 30;
+  const newEnd = new Date(); newEnd.setDate(newEnd.getDate()+days);
+  m.end = newEnd.toISOString().split('T')[0];
+  m.status = 'active';
+  save(); renderMembers(); renderDashboard();
+  showToast('↺ Suscripción renovada por '+days+' días');
+}
+
+function deleteMember(id) {
+  if (!confirm('¿Eliminar este miembro?')) return;
+  members = members.filter(x=>x.id!==id);
+  save(); renderMembers(); renderDashboard();
+  showToast('Miembro eliminado');
+}
+
+// ══ EXPORT CSV ══
+function exportCSV() {
+  const headers = ['Nombre','Telegram','Plan','Pago','Estado','Inicio','Vence','Monto','Teléfono'];
+  const rows = members.map(m => [m.name,m.telegram,m.plan,m.payment,m.status,m.start,m.end,m.amount,m.phone||''].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'NationParley_miembros.csv';
+  a.click();
+  showToast('↓ CSV exportado');
+}
+
+// ══ INIT ══
+renderDashboard();
+
+// Auto-update expired status
+members.forEach(m => {
+  if (m.status==='active' && daysLeft(m.end) < 0) m.status='expired';
+});
+save();
+</script>
+</body>
+</html>
