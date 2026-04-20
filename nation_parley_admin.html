@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- saved from url=(0074)https://nationparley-maker.github.io/nationparley/nation_parley_admin.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nation Parley — Panel Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="./Nation Parley — Panel Admin_files/css2" rel="stylesheet">
 <style>
 :root {
   --gold: #D4920C;
@@ -282,7 +282,7 @@ td { padding: 13px 16px; font-size: 15px; }
   th:nth-child(5), td:nth-child(5) { display: none; }
 }
 </style>
-</head>
+<link rel="stylesheet" href="chrome-extension://a90a4416-b949-4d8f-bc62-cba6c040ca9b/app/content-style.css"></head>
 <body>
 
 <div class="layout">
@@ -294,16 +294,16 @@ td { padding: 13px 16px; font-size: 15px; }
       <div class="sub">Panel Admin</div>
     </div>
     <nav>
-      <div class="nav-item active" onclick="showSection('dashboard')">
+      <div class="nav-item active" onclick="showSection(&#39;dashboard&#39;)">
         <span class="nav-icon">📊</span><span>Dashboard</span>
       </div>
-      <div class="nav-item" onclick="showSection('members')">
+      <div class="nav-item" onclick="showSection(&#39;members&#39;)">
         <span class="nav-icon">👥</span><span>Miembros</span>
       </div>
-      <div class="nav-item" onclick="showSection('payments')">
+      <div class="nav-item" onclick="showSection(&#39;payments&#39;)">
         <span class="nav-icon">💰</span><span>Pagos</span>
       </div>
-      <div class="nav-item" onclick="showSection('alerts')">
+      <div class="nav-item" onclick="showSection(&#39;alerts&#39;)">
         <span class="nav-icon">🔔</span><span>Alertas</span>
       </div>
     </nav>
@@ -320,26 +320,81 @@ td { padding: 13px 16px; font-size: 15px; }
         <button class="btn btn-gold" onclick="openModal()">+ Nuevo miembro</button>
       </div>
 
-      <div class="stats-grid" id="statsGrid"></div>
+      <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="stat-label">Total miembros</div>
+      <div class="stat-value">6</div>
+      <div class="stat-sub">registrados</div>
+      <div class="stat-icon">👥</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">VIP activos</div>
+      <div class="stat-value" style="color:var(--green)">3</div>
+      <div class="stat-sub">en el canal</div>
+      <div class="stat-icon">✅</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Vencidos / Pendientes</div>
+      <div class="stat-value" style="color:var(--red)">2</div>
+      <div class="stat-sub">1 venc. · 1 pend.</div>
+      <div class="stat-icon">⚠️</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Ingresos registrados</div>
+      <div class="stat-value" style="font-size:28px;padding-top:6px">$330.000</div>
+      <div class="stat-sub">COP total</div>
+      <div class="stat-icon">💰</div>
+    </div>
+  </div>
 
       <!-- Expiring soon alert -->
-      <div class="alert-box" id="expiringAlert">
+      <div class="alert-box show" id="expiringAlert">
         <div class="alert-title">⚠ Vencen en los próximos 5 días</div>
-        <ul class="alert-list" id="expiringList"></ul>
+        <ul class="alert-list" id="expiringList"><li>Ana Ríos (@anarios) — vence en <strong>3 día(s)</strong> · +57 300 000 0002</li></ul>
       </div>
 
       <!-- Recent members -->
       <div class="section">
         <div class="section-head">
           <div class="section-title">Últimos miembros registrados</div>
-          <button class="btn btn-outline btn-sm" onclick="showSection('members')">Ver todos</button>
+          <button class="btn btn-outline btn-sm" onclick="showSection(&#39;members&#39;)">Ver todos</button>
         </div>
         <div class="table-wrap">
           <table>
             <thead><tr>
               <th>Usuario</th><th>Plan</th><th>Estado</th><th>Vence</th><th>Días</th>
             </tr></thead>
-            <tbody id="recentTbody"></tbody>
+            <tbody id="recentTbody"><tr>
+      <td><strong>Sofía Vargas</strong><br><span style="color:var(--dim);font-size:12px">@sofiavargas</span></td>
+      <td><span class="badge badge-vip">VIP Mensual</span></td>
+      <td><span class="badge badge-pending">Pendiente</span></td>
+      <td style="color:var(--dim);font-size:13px">20/05/2026</td>
+      <td><span class="days-left warn">Pendiente</span></td>
+    </tr><tr>
+      <td><strong>Pedro Gómez</strong><br><span style="color:var(--dim);font-size:12px">@pedrogomez</span></td>
+      <td><span class="badge badge-free">Free</span></td>
+      <td><span class="badge badge-active">Activo</span></td>
+      <td style="color:var(--dim);font-size:13px">13/01/2029</td>
+      <td><span class="days-left ok">999 días</span></td>
+    </tr><tr>
+      <td><strong>María López</strong><br><span style="color:var(--dim);font-size:12px">@marialopez</span></td>
+      <td><span class="badge badge-vip">VIP Mensual</span></td>
+      <td><span class="badge badge-expired">Vencido</span></td>
+      <td style="color:var(--dim);font-size:13px">15/04/2026</td>
+      <td><span class="days-left exp">Vencido</span></td>
+    </tr><tr>
+      <td><strong>Luis Torres</strong><br><span style="color:var(--dim);font-size:12px">@luistorres</span></td>
+      <td><span class="badge badge-vip">VIP Trimestral</span></td>
+      <td><span class="badge badge-active">Activo</span></td>
+      <td style="color:var(--dim);font-size:13px">04/07/2026</td>
+      <td><span class="days-left ok">75 días</span></td>
+    </tr><tr>
+      <td><strong>Ana Ríos</strong><br><span style="color:var(--dim);font-size:12px">@anarios</span></td>
+      <td><span class="badge badge-vip">VIP Mensual</span></td>
+      <td><span class="badge badge-active">Activo</span></td>
+      <td style="color:var(--dim);font-size:13px">23/04/2026</td>
+      <td><span class="days-left warn">3 días</span></td>
+    </tr></tbody>
           </table>
         </div>
       </div>
@@ -356,11 +411,11 @@ td { padding: 13px 16px; font-size: 15px; }
       </div>
 
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Buscar por nombre o usuario..." oninput="renderMembers()"/>
-        <button class="filter-btn active" id="fAll" onclick="setFilter('all')">Todos</button>
-        <button class="filter-btn" id="fActive" onclick="setFilter('active')">Activos</button>
-        <button class="filter-btn" id="fExpired" onclick="setFilter('expired')">Vencidos</button>
-        <button class="filter-btn" id="fPending" onclick="setFilter('pending')">Pendientes</button>
+        <input type="text" id="searchInput" placeholder="Buscar por nombre o usuario..." oninput="renderMembers()">
+        <button class="filter-btn active" id="fAll" onclick="setFilter(&#39;all&#39;)">Todos</button>
+        <button class="filter-btn" id="fActive" onclick="setFilter(&#39;active&#39;)">Activos</button>
+        <button class="filter-btn" id="fExpired" onclick="setFilter(&#39;expired&#39;)">Vencidos</button>
+        <button class="filter-btn" id="fPending" onclick="setFilter(&#39;pending&#39;)">Pendientes</button>
       </div>
 
       <div class="table-wrap">
@@ -407,11 +462,11 @@ td { padding: 13px 16px; font-size: 15px; }
     <div class="modal-row">
       <div class="field">
         <label>Nombre completo</label>
-        <input id="mName" type="text" placeholder="Juan Pérez"/>
+        <input id="mName" type="text" placeholder="Juan Pérez">
       </div>
       <div class="field">
         <label>Usuario Telegram</label>
-        <input id="mTelegram" type="text" placeholder="@juanperez"/>
+        <input id="mTelegram" type="text" placeholder="@juanperez">
       </div>
     </div>
     <div class="modal-row">
@@ -438,11 +493,11 @@ td { padding: 13px 16px; font-size: 15px; }
     <div class="modal-row">
       <div class="field">
         <label>Fecha de inicio</label>
-        <input id="mStart" type="date"/>
+        <input id="mStart" type="date">
       </div>
       <div class="field">
         <label>Fecha de vencimiento</label>
-        <input id="mEnd" type="date"/>
+        <input id="mEnd" type="date">
       </div>
     </div>
     <div class="field">
@@ -456,11 +511,11 @@ td { padding: 13px 16px; font-size: 15px; }
     <div class="modal-row">
       <div class="field">
         <label>Monto cobrado (COP)</label>
-        <input id="mAmount" type="text" placeholder="50000"/>
+        <input id="mAmount" type="text" placeholder="50000">
       </div>
       <div class="field">
         <label>Teléfono / contacto</label>
-        <input id="mPhone" type="text" placeholder="+57 300..."/>
+        <input id="mPhone" type="text" placeholder="+57 300...">
       </div>
     </div>
     <div class="modal-actions">
@@ -478,22 +533,6 @@ td { padding: 13px 16px; font-size: 15px; }
 let members = JSON.parse(localStorage.getItem('np_members') || '[]');
 let editingId = null;
 let currentFilter = 'all';
-
-// Pre-load demo data if empty
-if (members.length === 0) {
-  const today = new Date();
-  const fmt = d => d.toISOString().split('T')[0];
-  const add = (d, n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
-  members = [
-    { id:1, name:'Carlos Mejía', telegram:'@carlosmejia', plan:'VIP Mensual', payment:'Nequi', start: fmt(add(today,-20)), end: fmt(add(today,10)), status:'active', amount:'50000', phone:'+57 312 000 0001' },
-    { id:2, name:'Ana Ríos', telegram:'@anarios', plan:'VIP Mensual', payment:'Bancolombia', start: fmt(add(today,-28)), end: fmt(add(today,3)), status:'active', amount:'50000', phone:'+57 300 000 0002' },
-    { id:3, name:'Luis Torres', telegram:'@luistorres', plan:'VIP Trimestral', payment:'PayPal', start: fmt(add(today,-15)), end: fmt(add(today,75)), status:'active', amount:'130000', phone:'' },
-    { id:4, name:'María López', telegram:'@marialopez', plan:'VIP Mensual', payment:'Nequi', start: fmt(add(today,-35)), end: fmt(add(today,-5)), status:'expired', amount:'50000', phone:'+57 301 000 0004' },
-    { id:5, name:'Pedro Gómez', telegram:'@pedrogomez', plan:'Free', payment:'—', start: fmt(today), end: fmt(add(today,999)), status:'active', amount:'0', phone:'' },
-    { id:6, name:'Sofía Vargas', telegram:'@sofiavargas', plan:'VIP Mensual', payment:'Bancolombia', start: fmt(today), end: fmt(add(today,30)), status:'pending', amount:'50000', phone:'+57 315 000 0006' },
-  ];
-  save();
-}
 
 function save() {
   localStorage.setItem('np_members', JSON.stringify(members));
@@ -820,5 +859,6 @@ members.forEach(m => {
 });
 save();
 </script>
-</body>
-</html>
+
+
+</body></html>
